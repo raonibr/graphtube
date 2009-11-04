@@ -188,7 +188,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     end
     listav.each do |vertice|
       if (vertice[2]=="ID")
-        arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Red      bc Red \n")
+        if (vertice[1][0] == 50)
+          arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Yellow      bc Yellow \n")
+        else  
+          arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Red      bc Red \n")
+        end
       else
         arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Blue     bc Blue \n")
       end
