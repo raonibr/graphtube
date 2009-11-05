@@ -46,34 +46,43 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     if (lugar != nil)
       lugar.split('/').each{ |d|
           td << d.to_i}
-      return td[0]
+      return td.last() #Pega o ultimo campo da data. Espera-se que seja o ano
     end
   end
 
+#Retorna True caso a data inicial e final tenham periodo em comum com as datas estabelecidas. 
+#Retorna True  se não houver data estabelecida.
   def verifica_data(datai_det, dataf_det, datai, dataf)
     if ((datai_det == nil) and (dataf_det == nil))
       return true
     else
+      #Vamos tratar as datas dos locais que tenham nil.
+      # Se houver nil no inicio, vamos considerar, que a pessoa sempre esteve naquele lugar até o periodo final.
+      # Se houver nil no final, vamos considerar, que a pessoa esteve naquele lugar do periodo inial até hoje.
+      # Se houverem dois nil, vamos considerar que o periodo não pode ser definido, logo, retorna false.
+      if ((datai== nil)and(dataf == nil))
+        return false
+      else
+        if (datai== nil)
+          datai = 0;
+        end
+        if (dataf== nil)
+          dataf = 9999;
+        end
+      end
+      #
       if (dataf_det == nil)
-        if (datai < datai_det.to_i)
-          if(dataf >= datai_det.to_i)
-            return true
-          else
-            return false
-          end
-        else
+        if (datai >= datai_det.to_i) or (dataf >= datai_det.to_i)
           return true
+        else
+          return false
         end
       else
         if (datai_det == nil)
-          if (dataf >dataf_det.to_i)
-            if (datai <= dataf_det.to_i)
-              return true
-            else
-              return false
-            end
-          else
+          if (dataf <= dataf_det.to_i) or (datai <= dataf_det.to_i)
             return true
+          else
+            return false
           end
         else
           if ((dataf < datai_det.to_i) or (datai > dataf_det.to_i))
@@ -86,9 +95,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     end
   end
   
+  
+  # Essa função refina o grafo que se tem adiconando os locais e arestas correspendentes aos parametros passados.
   def gerar_grafo_PL(classe,escopo,data_inicial,data_final)
     
-    #Coloca pessoas na lista de Vertices, sem repetiÃ§Ãµes:
+    #Coloca pessoas na lista de Vertices, sem repetições:
     @pessoas.each do |pessoa|
       if (pessoa.ativo() != 0)
         if !(@vertices.include?(["ID",pessoa.interview_id()]))
@@ -103,19 +114,17 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
         unidade.locais_classe(classe).each do |lugar|
           datainicial = trata_data(lugar[4])
           datafinal = trata_data(lugar[5])
-          if (datainicial != nil)
-            if @vertices.empty?
-              if verifica_data(data_inicial, data_final, datainicial, datafinal)
-                if lugar[(escopo - 1)]
-                  @vertices << lugar[(escopo - 1)].upcase()
-                end
+          if @vertices.empty?
+            if verifica_data(data_inicial, data_final, datainicial, datafinal)
+              if lugar[(escopo - 1)]
+                @vertices << lugar[(escopo - 1)].upcase()
               end
-            else
-              if verifica_data(data_inicial, data_final, datainicial, datafinal)
-                if lugar[(escopo - 1)]
-                  if ((not(@vertices.include?(lugar[(escopo - 1)].upcase())))and(lugar[(escopo - 1)].upcase()!=''))
-                    @vertices << lugar[(escopo - 1)].upcase()
-                  end
+            end
+          else
+            if verifica_data(data_inicial, data_final, datainicial, datafinal)
+              if lugar[(escopo - 1)]
+                if ((not(@vertices.include?(lugar[(escopo - 1)].upcase())))and(lugar[(escopo - 1)].upcase()!=''))
+                 @vertices << lugar[(escopo - 1)].upcase()
                 end
               end
             end
@@ -130,13 +139,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
         pessoa.locais_classe(classe).each do |local|
           datai = trata_data(local[4])
           dataf = trata_data(local[5])
-          if (datai != nil)
-            if verifica_data(data_inicial, data_final, datai, dataf)
-              if local[(escopo - 1)]
-                if (local[(escopo - 1)].upcase()!=' ')
-                  if !(@arestas.include?([pessoa.interview_id(),local[(escopo - 1)].upcase()]))
-                    @arestas << [pessoa.interview_id(),local[(escopo - 1)].upcase()]
-                  end
+          if verifica_data(data_inicial, data_final, datai, dataf)
+            if local[(escopo - 1)]
+              if (local[(escopo - 1)].upcase()!=' ')
+                if !(@arestas.include?([pessoa.interview_id(),local[(escopo - 1)].upcase()]))
+                  @arestas << [pessoa.interview_id(),local[(escopo - 1)].upcase()]
                 end
               end
             end
