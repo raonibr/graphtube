@@ -45,16 +45,16 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 		cont = 0	
 		while (cont < 4)
 			if (@sem_moradia[cont]==1)
-				$grafoExemplo.gerar_grafo_PL(MORADIA,cont+1)
+				$grafoExemplo.gerar_grafo_PL(MORADIA,cont+1, @datainicial, @datafinal)
 			end
 			if (@sem_trabalho[cont]==1)
-				$grafoExemplo.gerar_grafo_PL(TRABALHO,cont+1)
+				$grafoExemplo.gerar_grafo_PL(TRABALHO,cont+1, @datainicial, @datafinal)
 			end
 			if (@sem_estudo[cont]==1)
-				$grafoExemplo.gerar_grafo_PL(ESTUDO,cont+1)
+				$grafoExemplo.gerar_grafo_PL(ESTUDO,cont+1, @datainicial, @datafinal)
 			end
 			if (@sem_lazer[cont]==1)
-				$grafoExemplo.gerar_grafo_PL(LAZER,cont+1)
+				$grafoExemplo.gerar_grafo_PL(LAZER,cont+1, @datainicial, @datafinal)
 			end
 		cont = cont + 1
 		end
@@ -98,7 +98,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     if (lugares[w-1]==0)
 			lugares[w-1] = 1
-      $grafoExemplo.gerar_grafo_PL(escopo,w)
+      $grafoExemplo.gerar_grafo_PL(escopo,w, @datainicial, @datafinal)
       $textview_1.buffer.text = $grafoExemplo.retorna_legivel_pessoas()
       $textview_2.buffer.text = $grafoExemplo.retorna_legivel_lugares()
       $textview_3.buffer.text = $grafoExemplo.retorna_legivel_arestas()
@@ -191,10 +191,13 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	combobox_inicio.insert_text(7,'2007')
 	combobox_inicio.insert_text(8,'2008')
 	combobox_inicio.insert_text(9,'2009')
+  
+  combobox_inicio.active = 0
 
-	combobox_inicio.active = 0
-  
-  
+  combobox_inicio.signal_connect("changed") do |d|
+    @datainicial = combobox_inicio.active_text
+  end
+	
   #A FINAL
   combobox_final = Gtk::ComboBox.new
 
@@ -211,6 +214,11 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	combobox_final.active = 0
   
+   combobox_final.signal_connect("changed") do |d|
+    @datafinal = combobox_final.active_text
+  end
+  
+ 
   caixa_comboboxs = Gtk::HBox.new(true,10)
 
   caixa_comboboxs.pack_start(combobox_inicio,false,true,0)
@@ -601,4 +609,4 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	
 	window.show_all
 	
-	Gtk.main	
+	Gtk.main
