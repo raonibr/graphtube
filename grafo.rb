@@ -41,8 +41,52 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 =end
 
+  def trata_data(lugar)
+    td=[]
+    if (lugar != nil)
+      lugar.split('/').each{ |d|
+          td << d.to_i}
+      return td[0]
+    end
+  end
 
-  def gerar_grafo_PL(classe,escopo)
+  def verifica_data(datai_det, dataf_det, datai, dataf)
+    if ((datai_det == nil) and (dataf_det == nil))
+      return true
+    else
+      if (dataf_det == nil)
+        if (datai < datai_det.to_i)
+          if(dataf >= datai_det.to_i)
+            return true
+          else
+            return false
+          end
+        else
+          return true
+        end
+      else
+        if (datai_det == nil)
+          if (dataf >dataf_det.to_i)
+            if (datai <= dataf_det.to_i)
+              return true
+            else
+              return false
+            end
+          else
+            return true
+          end
+        else
+          if ((dataf < datai_det.to_i) or (datai > dataf_det.to_i))
+            return false
+          else
+            return true
+          end
+        end
+      end
+    end
+  end
+  
+  def gerar_grafo_PL(classe,escopo,data_inicial,data_final)
     
     #Coloca pessoas na lista de Vertices, sem repetições:
     @pessoas.each do |pessoa|
@@ -57,29 +101,43 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     @pessoas.each do |unidade|
       if (unidade.ativo() != 0)
         unidade.locais_classe(classe).each do |lugar|
-          if @vertices.empty? 
-              if lugar[(escopo - 1)]
-                @vertices << lugar[(escopo - 1)].upcase()
+          datainicial = trata_data(lugar[4])
+          datafinal = trata_data(lugar[5])
+          if (datainicial != nil)
+            if @vertices.empty?
+              if verifica_data(data_inicial, data_final, datainicial, datafinal)
+                if lugar[(escopo - 1)]
+                  @vertices << lugar[(escopo - 1)].upcase()
+                end
               end
-          else
-            if lugar[(escopo - 1)]
-              if ((not(@vertices.include?(lugar[(escopo - 1)].upcase())))and(lugar[(escopo - 1)].upcase()!=''))
-                @vertices << lugar[(escopo - 1)].upcase()
+            else
+              if verifica_data(data_inicial, data_final, datainicial, datafinal)
+                if lugar[(escopo - 1)]
+                  if ((not(@vertices.include?(lugar[(escopo - 1)].upcase())))and(lugar[(escopo - 1)].upcase()!=''))
+                    @vertices << lugar[(escopo - 1)].upcase()
+                  end
+                end
               end
             end
           end
-        end
-      end  
+        end  
+      end
     end
     
     #Agora ele insere as Arestas nos Locais Devidos
     @pessoas.each do |pessoa|
       if (pessoa.ativo() != 0)
         pessoa.locais_classe(classe).each do |local|
-          if local[(escopo - 1)]
-            if (local[(escopo - 1)].upcase()!='')
-              if !(@arestas.include?([pessoa.interview_id(),local[(escopo - 1)].upcase()]))
-                @arestas << [pessoa.interview_id(),local[(escopo - 1)].upcase()]
+          datai = trata_data(local[4])
+          dataf = trata_data(local[5])
+          if (datai != nil)
+            if verifica_data(data_inicial, data_final, datai, dataf)
+              if local[(escopo - 1)]
+                if (local[(escopo - 1)].upcase()!=' ')
+                  if !(@arestas.include?([pessoa.interview_id(),local[(escopo - 1)].upcase()]))
+                    @arestas << [pessoa.interview_id(),local[(escopo - 1)].upcase()]
+                  end
+                end
               end
             end
           end
@@ -87,7 +145,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
       end
     end
   end
-
+  
 #função para escolher os casos
   def ativa_caso()
     @pessoas.each do |pessoa|	
