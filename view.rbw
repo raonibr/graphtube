@@ -196,6 +196,12 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
   combobox_inicio.signal_connect("changed") do |d|
     @datainicial = combobox_inicio.active_text
+    if (@datainicial == "Periodo inicial.")
+      @datainicial = nil
+      atualiza_buffer()
+    else
+      atualiza_buffer()
+    end
   end
 	
   #A FINAL
@@ -216,6 +222,12 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   
    combobox_final.signal_connect("changed") do |d|
     @datafinal = combobox_final.active_text
+    if (@datafinal == "Periodo final.")
+      @datafinal = nil
+      atualiza_buffer()
+    else
+      atualiza_buffer()
+    end
   end
   
  
