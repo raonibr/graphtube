@@ -98,15 +98,6 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   
   # Essa função refina o grafo que se tem adiconando os locais e arestas correspendentes aos parametros passados.
   def gerar_grafo_PL(classe,escopo,data_inicial,data_final)
-    
-    #Coloca pessoas na lista de Vertices, sem repetições:
-    @pessoas.each do |pessoa|
-      if (pessoa.ativo() != 0)
-        if !(@vertices.include?(["ID",pessoa.interview_id()]))
-          @vertices << ["ID",pessoa.interview_id()]
-        end
-      end
-    end
 
     #Coloca locais do escopo na lista de Vertices, sem repetiÃ§Ãµes:
     @pessoas.each do |unidade|
@@ -149,6 +140,26 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
             end
           end
         end
+      end
+    end
+  end
+  
+  
+# Função que coloca pessoas na lista de pessoas
+  def coloca_pessoas_todas()
+    @pessoas.each do |pessoa|
+      if (pessoa.ativo() != 0)
+        if !(@vertices.include?(["ID",pessoa.interview_id()]))
+          @vertices << ["ID",pessoa.interview_id()]
+        end
+      end
+    end
+  end
+  
+  def coloca_pessoas_ativas()
+    @arestas.each do |lugar|
+      if !(@vertices.include?(["ID",lugar[0]]))
+        @vertices << ["ID",lugar[0]]
       end
     end
   end

@@ -39,6 +39,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_estudo = [0,0,0,0]
 @sem_lazer = [0,0,0,0]
 @sem_caso = [0,0]
+@sem_filtros_extra = [0]
 
 	def atualiza_buffer()
 		$grafoExemplo.clear_grafo()
@@ -57,7 +58,13 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 				$grafoExemplo.gerar_grafo_PL(LAZER,cont+1, @datainicial, @datafinal)
 			end
 		cont = cont + 1
-		end
+  end
+    if (@sem_filtros_extra[0] == 0)
+      $grafoExemplo.coloca_pessoas_todas()
+    else
+      $grafoExemplo.coloca_pessoas_ativas()
+    end
+    
 		$textview_1.buffer.text = $grafoExemplo.retorna_legivel_pessoas()
 		$textview_2.buffer.text = $grafoExemplo.retorna_legivel_lugares()
 		$textview_3.buffer.text = $grafoExemplo.retorna_legivel_arestas()
@@ -98,7 +105,11 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     if (lugares[w-1]==0)
 			lugares[w-1] = 1
+      #Essa parte executa caso seja um novo lugar selecionado Otimização feita para salvar processamento
       $grafoExemplo.gerar_grafo_PL(escopo,w, @datainicial, @datafinal)
+      if (@sem_filtros_extra[0] == 1)
+        $grafoExemplo.coloca_pessoas_ativas()
+      end
       $textview_1.buffer.text = $grafoExemplo.retorna_legivel_pessoas()
       $textview_2.buffer.text = $grafoExemplo.retorna_legivel_lugares()
       $textview_3.buffer.text = $grafoExemplo.retorna_legivel_arestas()
@@ -576,6 +587,27 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	scrolled_textview_3.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS)
 	
 #---------------------------------------------------------------------------------------------#
+
+
+#------------------------------CRIA A RADIOBOX DE EXCLUIR NÃO ATIVOS------------------#
+
+caixa_opcao_exc_n_ativos = Gtk::HBox.new(true,10)
+check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
+
+	check_Excluir.signal_connect("toggled") do
+    if(@sem_filtros_extra[0] == 0)
+      @sem_filtros_extra[0] = 1
+    else
+      @sem_filtros_extra[0] = 0
+    end
+    atualiza_buffer()
+  end
+
+	caixa_opcao_exc_n_ativos.pack_start(check_Excluir,false,true,0)
+  caixa_comandos.pack_start(caixa_opcao_exc_n_ativos,true,false,0)
+
+#---------------------------------------------------------------------------------------------#
+
 
 #------------------------------CRIA O BOTÃƒO DE EXPORTAR---------------------------------------#
 	botao_exportar = Gtk::Button.new("Exportar .NET")
