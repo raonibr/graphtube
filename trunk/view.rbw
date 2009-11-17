@@ -263,7 +263,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	check_End_moradia = Gtk::CheckButton.new("Endereço")
 
-	check_Local_moradia = Gtk::CheckButton.new("Local")	
+	check_Local_moradia = Gtk::CheckButton.new("Numero")	
 
 	
 	check_Moradia.sensitive = true
