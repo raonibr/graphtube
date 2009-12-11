@@ -16,7 +16,7 @@ class Feeder
   
   def gera_pessoas()
   @pessoa = []
-  db = SQLite3::Database.open( "Tuberculose.sqlite" )
+  db = SQLite3::Database.open( "Database.sqlite" )
 
   #Invoca a tabela de pessoas
   tabela = db.execute( "SELECT * FROM tabind" )
