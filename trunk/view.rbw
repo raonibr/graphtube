@@ -121,13 +121,14 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   
 	def gera_arquivo(parent)
     dialog = Gtk::FileChooserDialog.new(
-        "Save File As ...",
+        "Salvar arquivo como ...",
 	      parent,
 	      Gtk::FileChooser::ACTION_SAVE,
 	      nil,
 	      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
 	      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_ACCEPT ]
 	  )
+    dialog.current_folder = GLib.home_dir()
 	  dialog.run do |response|
 	    if response == Gtk::Dialog::RESPONSE_ACCEPT
 	      @filename = dialog.filename
@@ -608,6 +609,17 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 
 #---------------------------------------------------------------------------------------------#
 
+#------------------------------CRIA O BOTÃO DE DESENHAR---------------------------------------#
+	botao_desenhar = Gtk::Button.new("Desenhar GRAFO")
+
+	botao_desenhar.signal_connect("clicked") do |w|
+		DrawView.new($grafoExemplo.vertices(),$grafoExemplo.arestas())
+	end
+
+
+	
+	caixa_comandos.pack_start(botao_desenhar,true,false,0)
+#---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
 	botao_exportar = Gtk::Button.new("Exportar .NET")
@@ -626,8 +638,9 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 	
 	botao_sair.signal_connect("clicked") do
 		Gtk.main_quit
-	end	
-	
+  end	
+  
+  
 	caixa_comandos.pack_start(botao_sair,true,true,0)
 	caixa_comandos.set_size_request(100,-1)
 #---------------------------------------------------------------------------------------------#
