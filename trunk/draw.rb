@@ -13,11 +13,16 @@ Aresta_draw: [POSICAO_DO_ELEM_1,POSICAO_DO_ELEM_2]
 	
 --------------------------------
 =end
-
+require 'gtk2'
 
 class DrawView
 
 def initialize(vertices, arestas)
+  
+    @draw_window = Gtk::Window.new("Gdk::GC sample").set_size_request(600, 400)
+    @draw_window.title = "Draw Area"
+    @draw_window.app_paintable = true
+    @draw_window.realize
   
     # PRIMEIRO, SE DEFINEM AS GLOBAIS DESSA JANELA.
     @vertices = vertices
@@ -42,12 +47,34 @@ def initialize(vertices, arestas)
     
     
     #Depois a drowing area é criada
-    area = Gtk::DrawingArea.new
-    area.set_size_request(100,100)
+    #area = Gtk::DrawingArea.new
+    #area.set_size_request(100,100)
+
+    #@draw_window.add(area)
+    
+    drawable = @draw_window.window
+    gc = Gdk::GC.new(drawable)
+
+    red   = Gdk::Color.new(65535, 0, 0)
+    green = Gdk::Color.new(0, 65535, 0)
+    colormap = Gdk::Colormap.system
+    colormap.alloc_color(red,   false, true)
+    colormap.alloc_color(green, false, true)
     
     
     # AQUI É O REDRAW, DEPOIS PRECISA VIRAR UM MODULO
-    area.signal_connect("expose_event") do
+    @draw_window.signal_connect("expose_event") do |win, evt|
+      
+    drawable = @draw_window.window
+    gc = Gdk::GC.new(drawable)
+
+    red   = Gdk::Color.new(65535, 0, 0)
+    green = Gdk::Color.new(0, 65535, 0)
+    blue = Gdk::Color.new(0,0,  65535)
+    colormap = Gdk::Colormap.system
+    colormap.alloc_color(red,   false, true)
+    colormap.alloc_color(green, false, true)
+    colormap.alloc_color(blue, false, true)
       
       @altura = @draw_window.size.last()
       @largura = @draw_window.size.first()
@@ -58,33 +85,38 @@ def initialize(vertices, arestas)
       @Arestas_draw.each do |a|
         # A LINHA ABAIXO É COMPLICADA... Mas ela pega para cada aresta e recupera as coordenadas dos vertices de cada lado e desenha um linha ligando eles.
         # Quando se introduz o "tam_vertice/2" se faz a correção da posição do canto da linha.. Assim ela aponta para o centro do vertice, não para o canto
-        area.window.draw_line(area.style.fg_gc(area.state), @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
+        drawable.draw_line(gc, @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
       end
-      
+
+      gc.set_background(green)
+
       layout = Pango::Layout.new(Gdk::Pango.context)
       layout.font_description = Pango::FontDescription.new('Sans 7')
-
-          
       # NESSE LOOP, CADA VERTICE É DESENHADO.
         @Vertices_draw.each do |p| #Hashs tb tem funcão EACH
           layout.text = p[1][2]
           x1 = p[1][0]*@largura
           y1 = p[1][1]*@altura
-          area.window.draw_arc(area.style.fg_gc(area.state), true, x1, y1, @tam_vertice, @tam_vertice, 0 ,64 * 360) 
-          area.window.draw_layout(area.style.fg_gc(area.state), x1, y1-10, layout)
+          drawable.draw_layout(@draw_window.style.fg_gc(@draw_window.state), x1, y1-10, layout)
+          if (p[1][2][0] == 49)
+            gc.set_line_attributes(10, Gdk::GC::LINE_SOLID, Gdk::GC::CAP_ROUND, Gdk::GC::JOIN_ROUND)
+            drawable.draw_arc( gc.set_foreground(red), true, x1, y1, @tam_vertice, @tam_vertice, 0 ,64 * 360) 
+          
+          elsif (p[1][2][0] == 50)
+            gc.set_line_attributes(10, Gdk::GC::LINE_SOLID, Gdk::GC::CAP_ROUND, Gdk::GC::JOIN_ROUND)
+            drawable.draw_arc( gc.set_foreground(green), true, x1, y1, @tam_vertice, @tam_vertice, 0 ,64 * 360)
+           
+          else
+            gc.set_line_attributes(10, Gdk::GC::LINE_SOLID, Gdk::GC::CAP_ROUND, Gdk::GC::JOIN_ROUND)
+            drawable.draw_arc( gc.set_foreground(blue), true, x1, y1, @tam_vertice, @tam_vertice, 0 ,64 * 360)
+          end  
         end
-        
-        
-
-          
-          
-          
+       
     end
     
     
-    @draw_window = Gtk::Window.new.add(area).set_size_request(600, 400)
-    @draw_window.title = "Draw Area"
-    @draw_window.show_all
+      @draw_window.show_all
+   
     
   end
   
