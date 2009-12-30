@@ -54,7 +54,13 @@ def initialize(vertices, arestas)
       
       
       # ESSES DOIS LOOPs ABAIXO PRECISAM SER MODULARIZADOS... FAZER ISSO NA PRÓXIMA REVISÃO.
-      
+      # NESSE LOOP, CADA ARESTA É DESENHADA.
+      @Arestas_draw.each do |a|
+        # A LINHA ABAIXO É COMPLICADA... Mas ela pega para cada aresta e recupera as coordenadas dos vertices de cada lado e desenha um linha ligando eles.
+        # Quando se introduz o "tam_vertice/2" se faz a correção da posição do canto da linha.. Assim ela aponta para o centro do vertice, não para o canto
+        area.window.draw_line(area.style.fg_gc(area.state), @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
+      end
+          
       # NESSE LOOP, CADA VERTICE É DESENHADO.
         @Vertices_draw.each do |p| #Hashs tb tem funcão EACH
           x1 = p[1][0]*@largura
@@ -63,12 +69,7 @@ def initialize(vertices, arestas)
         end
         
         
-     # NESSE LOOP, CADA ARESTA É DESENHADA.
-         @Arestas_draw.each do |a|
-            # A LINHA ABAIXO É COMPLICADA... Mas ela pega para cada aresta e recupera as coordenadas dos vertices de cada lado e desenha um linha ligando eles.
-            # Quando se introduz o "tam_vertice/2" se faz a correção da posição do canto da linha.. Assim ela aponta para o centro do vertice, não para o canto
-            area.window.draw_line(area.style.fg_gc(area.state), @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
-          end
+
           
           
           
