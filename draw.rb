@@ -60,12 +60,18 @@ def initialize(vertices, arestas)
         # Quando se introduz o "tam_vertice/2" se faz a correção da posição do canto da linha.. Assim ela aponta para o centro do vertice, não para o canto
         area.window.draw_line(area.style.fg_gc(area.state), @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
       end
+      
+      layout = Pango::Layout.new(Gdk::Pango.context)
+      layout.font_description = Pango::FontDescription.new('Sans 7')
+
           
       # NESSE LOOP, CADA VERTICE É DESENHADO.
         @Vertices_draw.each do |p| #Hashs tb tem funcão EACH
+          layout.text = p[1][2]
           x1 = p[1][0]*@largura
           y1 = p[1][1]*@altura
           area.window.draw_arc(area.style.fg_gc(area.state), true, x1, y1, @tam_vertice, @tam_vertice, 0 ,64 * 360) 
+          area.window.draw_layout(area.style.fg_gc(area.state), x1, y1-10, layout)
         end
         
         
