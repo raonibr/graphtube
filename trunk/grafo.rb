@@ -248,6 +248,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 
 
 # Cria um arquivo contendo o grafo descrito em formato .net para ser aberto no pajek
+# PRECISA SER REFATORADO USANDO HASH DE VERTICES
   def imprime_pajek(nome_arquivo)
     arquivo = File.new(nome_arquivo, "w+")
     i = 1
