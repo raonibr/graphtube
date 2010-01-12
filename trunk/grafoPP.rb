@@ -30,7 +30,6 @@ class GrafoPP < Grafo
     grafo_base.vertices().each do |pessoa|
       if(pessoa[0]=="ID")
         @vertices << pessoa
-        pp pessoa
       end
     end
   end
