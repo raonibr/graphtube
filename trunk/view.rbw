@@ -621,6 +621,20 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 	caixa_comandos.pack_start(botao_desenhar,true,false,0)
 #---------------------------------------------------------------------------------------------#
 
+#------------------------------CRIA O BOTÃO DE PESSOA-PESSOA-------------------#
+
+botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Pessoa-Pessoa")
+
+	botao_pessoa_pessoa.signal_connect("clicked") do |w|
+    ViewPP.new($grafoExemplo.vertices(),$grafoExemplo.arestas())
+	end
+
+
+	
+	caixa_comandos.pack_start(botao_pessoa_pessoa,true,false,0)
+
+#---------------------------------------------------------------------------------------------#
+
 #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
 	botao_exportar = Gtk::Button.new("Exportar .NET")
 
