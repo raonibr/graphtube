@@ -626,7 +626,7 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Pessoa-Pessoa")
 
 	botao_pessoa_pessoa.signal_connect("clicked") do |w|
-    ViewPP.new($grafoExemplo.vertices(),$grafoExemplo.arestas())
+    ViewPP.new($grafoExemplo)
 	end
 
 
