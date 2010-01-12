@@ -2,13 +2,14 @@ require 'header'
 
 class ViewPP
 
-  def initialize(vertices, arestas)
+  def initialize(grafo_base)
+    @grafoPP = GrafoPP.new(grafo_base)
     #----------------------------------CRIA JANELA PRINCIPAL--------------------------------------#
     window = Gtk::Window.new
 
     window.title = "Pessoa-Pessoa"
     window.border_width = 10
-    window.set_size_request(500, 500)
+    window.set_size_request(350, 500)
   
     
     caixa_comandos = Gtk::VBox.new(true,10)
@@ -19,7 +20,7 @@ class ViewPP
 
     textview_1 = Gtk::TextView.new
 
-    textview_1.buffer.text = ""
+    textview_1.buffer.text = @grafoPP.retorna_legivel_pessoas()
 
     textview_1.editable = false
 
@@ -41,7 +42,7 @@ class ViewPP
   #-----------------------------TEXTVIEW_2 RELACIONADA AS ARESTAS----------------------------------#
     textview_2 = Gtk::TextView.new
 
-    textview_2.buffer.text = ""
+    textview_2.buffer.text = @grafoPP.retorna_legivel_arestas()
 
     textview_2.editable = false
 
@@ -72,7 +73,7 @@ class ViewPP
     botao_desenhar = Gtk::Button.new("Desenhar GRAFO")
 
     botao_desenhar.signal_connect("clicked") do |w|
-      DrawView.new($grafoExemplo.vertices(),$grafoExemplo.arestas())
+      DrawView.new(@grafoPP.vertices(),@grafoPP.arestas())
     end
 
 
@@ -84,7 +85,7 @@ class ViewPP
     botao_exportar = Gtk::Button.new("Exportar .NET")
 
     botao_exportar.signal_connect("clicked") do |w|
-      gera_arquivo(window)
+      self.gera_arquivo_PP(window)
     end
 
 
@@ -96,4 +97,28 @@ class ViewPP
     
     window.show_all
   end
+  
+  
+  	def gera_arquivo_PP(parent)
+    dialog = Gtk::FileChooserDialog.new(
+        "Salvar arquivo como ...",
+	      parent,
+	      Gtk::FileChooser::ACTION_SAVE,
+	      nil,
+	      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
+	      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_ACCEPT ]
+	  )
+    dialog.current_folder = GLib.home_dir()
+	  dialog.run do |response|
+	    if response == Gtk::Dialog::RESPONSE_ACCEPT
+	      @filename = dialog.filename
+	    end
+	  end
+  	dialog.destroy
+    if (@filename)
+      @grafoPP.imprime_pajek(@filename+".net")
+    end
+	end
+  
+  
 end
