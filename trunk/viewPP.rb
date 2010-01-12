@@ -8,14 +8,11 @@ class ViewPP
 
     window.title = "Pessoa-Pessoa"
     window.border_width = 10
-    window.set_size_request(790, 500)
-    
-    #window.signal_connect('delete_event') do
-      #Gtk.main_quit
-      #false
-    #end
+    window.set_size_request(500, 500)
+  
     
     caixa_comandos = Gtk::VBox.new(true,10)
+    caixa_comandos.homogeneous=false
   #---------------------------------------------------------------------------------------------#
   
     #-----------------------------TEXTVIEW_1 RELACIONADA A PESSOAS----------------------------------#
@@ -80,7 +77,7 @@ class ViewPP
 
 
     
-    caixa_comandos.pack_start(botao_desenhar,true,false,0)
+    caixa_comandos.pack_start(botao_desenhar,false,false,0)
   #---------------------------------------------------------------------------------------------#
 
   #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
@@ -92,7 +89,7 @@ class ViewPP
 
 
     
-    caixa_comandos.pack_start(botao_exportar,true,false,0)
+    caixa_comandos.pack_start(botao_exportar,false,false,0)
   #---------------------------------------------------------------------------------------------#
    
     window.add(caixa_comandos)
