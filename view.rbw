@@ -635,6 +635,20 @@ botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Pessoa-Pessoa")
 
 #---------------------------------------------------------------------------------------------#
 
+#------------------------------CRIA O BOTÃO DE LOCAL-LOCAL-------------------#
+
+botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Local-Local")
+
+	botao_pessoa_pessoa.signal_connect("clicked") do |w|
+    ViewLL.new($grafoExemplo)
+	end
+
+
+	
+	caixa_comandos.pack_start(botao_pessoa_pessoa,true,false,0)
+
+#---------------------------------------------------------------------------------------------#
+
 #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
 	botao_exportar = Gtk::Button.new("Exportar .NET")
 

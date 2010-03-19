@@ -157,9 +157,9 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   end
   
   def coloca_pessoas_ativas()
-    @arestas.each do |lugar|
-      if !(@vertices.include?(["ID",lugar[0]]))
-        @vertices << ["ID",lugar[0]]
+    @arestas.each do |pessoa|
+      if !(@vertices.include?(["ID",pessoa[0]]))
+        @vertices << ["ID",pessoa[0]]
       end
     end
   end
@@ -257,11 +257,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     arquivo.write("*Vertices #{@vertices.length()}\n")
     @vertices.each do |vertice|
       if (vertice[0]=="ID")
-	listav << [i,vertice[1],"ID"]
-	else
-	listav << [i,vertice,"LOC"]
-	end
-	i=i+1
+	     listav << [i,vertice[1],"ID"]
+	    else
+       listav << [i,vertice,"LOC"]
+	    end
+      i=i+1
     end
     listav.each do |vertice|
       if (vertice[2]=="ID")
