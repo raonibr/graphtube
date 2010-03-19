@@ -51,7 +51,7 @@ def initialize(vertices, arestas)
         end
       else
         #Correção para quando o vertice possui tamanho.
-        if (ver.length() == 1)
+        if (ver.is_a?(String))
           @Vertices_draw[ver] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver,@blue]
         else
           @Vertices_draw[ver[0]] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver[0],@blue]
@@ -71,7 +71,6 @@ def initialize(vertices, arestas)
     @layout = Pango::Layout.new(Gdk::Pango.context)
     @layout.font_description = Pango::FontDescription.new('Sans 7')
     
-    
     # AQUI É O REDRAW
       redraw()
 
@@ -89,6 +88,7 @@ def initialize(vertices, arestas)
       @Arestas_draw.each do |a|
         # A LINHA ABAIXO É COMPLICADA... Mas ela pega para cada aresta e recupera as coordenadas dos vertices de cada lado e desenha um linha ligando eles.
         # Quando se introduz o "tam_vertice/2" se faz a correção da posição do canto da linha.. Assim ela aponta para o centro do vertice, não para o canto
+        
         @drawable.draw_line(@gc, @Vertices_draw[a[0]][0]*@largura+@tam_vertice/2, @Vertices_draw[a[0]][1]*@altura+@tam_vertice/2, @Vertices_draw[a[1]][0]*@largura+@tam_vertice/2,@Vertices_draw[a[1]][1]*@altura+@tam_vertice/2)
       end
 
