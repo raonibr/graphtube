@@ -85,6 +85,18 @@ class GrafoLL < Grafo
   end
   
   
+  # Retorna lista de arestas em formato legível para exibição em um buffer
+  def retorna_legivel_arestas()
+	string = ""
+	if (@arestas)
+		@arestas.each do |aresta|
+			string = string + aresta[0] + "->" +aresta[1] + "   Peso: "  + @arestas_pesos[aresta[0]+aresta[1]].to_s() + "\n"
+		end
+	end
+	return string
+  end
+  
+  
   def cria_clique_arestas(grupo)
     for i in 0 .. (grupo.length()-1)
       for j in i .. (grupo.length()-1)
