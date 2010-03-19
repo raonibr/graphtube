@@ -50,7 +50,12 @@ def initialize(vertices, arestas)
           @Vertices_draw[ver[1]] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver[1],@yellow]
         end
       else
-        @Vertices_draw[ver] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver,@blue]
+        #Correção para quando o vertice possui tamanho.
+        if (ver.length() == 1)
+          @Vertices_draw[ver] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver,@blue]
+        else
+          @Vertices_draw[ver[0]] = [(rand(10000).to_f/10000),(rand(10000).to_f/10000),ver[0],@blue]
+        end
       end
     end
     
