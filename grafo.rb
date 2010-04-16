@@ -213,7 +213,8 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 	if (@vertices)
 		@vertices.each do |vertice|
 			if (vertice[0]=="ID")
-			string = string + vertice[1] + "\n"
+			  string << vertice[1] 
+        string << "\n"
 			end
 		end
 	end
@@ -228,7 +229,8 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 			if (vertice[0]=="ID")
 			#string = string + vertice[1] + "\n"
 			else
-			string = string + vertice + "\n"
+			  string << vertice
+        string << "\n"
 			end
 		end
 	end
@@ -240,7 +242,10 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 	string = ""
 	if (@arestas)
 		@arestas.each do |aresta|
-			string = string + aresta[0] + "->" +aresta[1] + "\n"
+			string << aresta[0]
+      string << "->"
+      string << aresta[1]
+      string << "\n"
 		end
 	end
 	return string
