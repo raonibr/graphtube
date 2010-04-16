@@ -85,7 +85,7 @@ class ViewLL
     botao_exportar = Gtk::Button.new("Exportar .NET")
 
     botao_exportar.signal_connect("clicked") do |w|
-      self.gera_arquivo_LL(window)
+      gera_arquivo(window,"net", @grafoLL)
     end
 
 
@@ -93,32 +93,22 @@ class ViewLL
     caixa_comandos.pack_start(botao_exportar,false,false,0)
   #---------------------------------------------------------------------------------------------#
    
+  #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
+	  botao_exportar = Gtk::Button.new("Exportar Matriz de Adjacencias")
+
+	  botao_exportar.signal_connect("clicked") do |w|
+  		gera_arquivo(window,"matrix", @grafoLL)
+	  end
+
+
+	
+	  caixa_comandos.pack_start(botao_exportar,false,false,0)
+  #---------------------------------------------------------------------------------------------#
+   
     window.add(caixa_comandos)
     
     window.show_all
   end
-  
-  
-  	def gera_arquivo_LL(parent)
-    dialog = Gtk::FileChooserDialog.new(
-        "Salvar arquivo como ...",
-	      parent,
-	      Gtk::FileChooser::ACTION_SAVE,
-	      nil,
-	      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
-	      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_ACCEPT ]
-	  )
-    dialog.current_folder = GLib.home_dir()
-	  dialog.run do |response|
-	    if response == Gtk::Dialog::RESPONSE_ACCEPT
-	      @filename = dialog.filename
-	    end
-	  end
-  	dialog.destroy
-    if (@filename)
-      @grafoLL.imprime_pajek(@filename+".net")
-    end
-	end
   
   
 end

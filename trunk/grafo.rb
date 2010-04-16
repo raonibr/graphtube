@@ -304,4 +304,23 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 	return arquivo
   end
 
+
+  def imprime_matriz_adjacencias(nome_arquivo)
+    arquivo = File.new(nome_arquivo, "w+")
+    i = @vertices.length()
+    # Isso cria uma matriz de n por n onde n é o número de vértices.
+    @matriz_adj = Array.new(i, Array.new(i, 0))
+    
+    @matriz_adj.each do |linha|
+      linha.each do |casa|
+        arquivo.write("#{casa}")
+      end
+      arquivo.write("\n")
+    end
+    
+    
+    arquivo.close
+	  return arquivo
+  end
+
 end

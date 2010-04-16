@@ -119,7 +119,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 		end
   end
   
-	def gera_arquivo(parent)
+	def gera_arquivo(parent , tipo, grafo_usado)
     dialog = Gtk::FileChooserDialog.new(
         "Salvar arquivo como ...",
 	      parent,
@@ -136,9 +136,15 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	  end
   	dialog.destroy
     if (@filename)
-      $grafoExemplo.imprime_pajek(@filename+".net")
+      if(tipo == "net")
+        grafo_usado.imprime_pajek(@filename+".net")
+      else
+        grafo_usado.imprime_matriz_adjacencias(@filename+".net")
+      end
     end
 	end
+  
+  
   
   
   
@@ -649,11 +655,23 @@ botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Local-Local")
 
 #---------------------------------------------------------------------------------------------#
 
-#------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
+#------------------------------CRIA O BOTÃO DE EXPORTAR . NET---------------------------------------#
 	botao_exportar = Gtk::Button.new("Exportar .NET")
 
 	botao_exportar.signal_connect("clicked") do |w|
-		gera_arquivo(window)
+		gera_arquivo(window,"net",$grafoExemplo)
+	end
+
+
+	
+	caixa_comandos.pack_start(botao_exportar,true,false,0)
+#---------------------------------------------------------------------------------------------#
+
+#------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
+	botao_exportar = Gtk::Button.new("Exportar Matriz de Adjacencias")
+
+	botao_exportar.signal_connect("clicked") do |w|
+		gera_arquivo(window,"matrix",$grafoExemplo)
 	end
 
 
