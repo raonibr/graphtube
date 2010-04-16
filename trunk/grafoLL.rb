@@ -77,7 +77,7 @@ class GrafoLL < Grafo
 			if (vertice[0]=="ID")
 			#string = string + vertice[1] + "\n"
 			else
-			string = string + vertice[0] + "    Peso:  " + vertice[1].to_s() + "\n"
+			string << ( vertice[0] + "    Peso:  " + vertice[1].to_s() + "\n" )
 			end
 		end
 	end
@@ -90,7 +90,7 @@ class GrafoLL < Grafo
 	string = ""
 	if (@arestas)
 		@arestas.each do |aresta|
-			string = string + aresta[0] + "->" +aresta[1] + "   Peso: "  + @arestas_pesos[aresta[0]+aresta[1]].to_s() + "\n"
+			string << ( aresta[0] + "->" +aresta[1] + "   Peso: "  + @arestas_pesos[aresta[0]+aresta[1]].to_s() + "\n" )
 		end
 	end
 	return string
