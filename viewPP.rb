@@ -81,17 +81,31 @@ class ViewPP
     caixa_comandos.pack_start(botao_desenhar,false,false,0)
   #---------------------------------------------------------------------------------------------#
 
-  #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
+   #------------------------------CRIA O BOTÃO DE EXPORTAR---------------------------------------#
     botao_exportar = Gtk::Button.new("Exportar .NET")
 
     botao_exportar.signal_connect("clicked") do |w|
-      self.gera_arquivo_PP(window)
+      gera_arquivo(window,"net", @grafoPP)
     end
 
 
     
     caixa_comandos.pack_start(botao_exportar,false,false,0)
   #---------------------------------------------------------------------------------------------#
+   
+  #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
+	  botao_exportar = Gtk::Button.new("Exportar Matriz de Adjacencias")
+
+	  botao_exportar.signal_connect("clicked") do |w|
+  		gera_arquivo(window,"matrix", @grafoPP)
+	  end
+
+
+	
+	  caixa_comandos.pack_start(botao_exportar,false,false,0)
+  #---------------------------------------------------------------------------------------------#
+  
+  
    
     window.add(caixa_comandos)
     
