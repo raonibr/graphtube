@@ -304,19 +304,52 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 	return arquivo
   end
 
-
+# A função imprime a matriz de adjacencias para o conjunto de vertices exisentes de forma indiscriminada
   def imprime_matriz_adjacencias(nome_arquivo)
     arquivo = File.new(nome_arquivo, "w+")
     i = @vertices.length()
-    # Isso cria uma matriz de n por n onde n é o número de vértices.
-    @matriz_adj = Array.new(i, Array.new(i, 0))
     
-    @matriz_adj.each do |linha|
-      linha.each do |casa|
-        arquivo.write("#{casa}")
+    # Isso cria uma matriz de n por n onde n é o número de vértices.
+    @matriz_adj = Array.new(i)
+    @matriz_adj.map! { Array.new(i,0) }
+
+    
+    # Esse hash auxiliara mentendo uma lista de todos os elementos e suas respectivas posições na matriz de adjacencias
+    @hash_aux_matriz = Hash[]
+    cont = 0
+    @vertices.each do |vertice|
+      if (vertice[0]=="ID")
+	     @hash_aux_matriz[vertice[1]] = cont
+	    else
+       @hash_aux_matriz[vertice] = cont
+	    end
+      cont=cont+1
+    end
+    
+    #Agora cada aresta vai representar um par de 1´s na matrzi de adjacencias
+    @arestas.each do |aresta|
+      a = @hash_aux_matriz[aresta[0]]
+      b = @hash_aux_matriz[aresta[1]]
+      @matriz_adj[a][b] = 1
+      @matriz_adj[b][a] = 1
+    end
+    
+    @matriz_adj[0][0] = 1
+    
+    for q in 0 .. (i-1)
+      for w in 0 .. (i-1)
+        arquivo.write("#{@matriz_adj[q][w]}")
       end
       arquivo.write("\n")
-    end
+    end  
+    
+    #Isso imprime a matriz inteira no arquivo
+    #@matriz_adj.each do |linha|
+     # linha.each do |casa|
+    #    arquivo.write("#{casa}")
+     # end
+     # arquivo.write("\n")
+   # end
     
     
     arquivo.close
