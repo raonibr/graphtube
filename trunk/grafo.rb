@@ -219,7 +219,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   
   def desativar_pessoas_idade(min,max)
     @pessoas.each do |pessoa|
-      if ((pessoa.idade.to_i() <= min.to_i()) or (pessoa.idade.to_i() >= max.to_i()))
+      if ((pessoa.idade.to_i() < min.to_i()) or (pessoa.idade.to_i() > max.to_i()))
         pessoa.set_ativo(0)
       end 
     end
