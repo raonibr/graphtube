@@ -39,6 +39,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_estudo = [0,0,0,0]
 @sem_lazer = [0,0,0,0]
 @sem_caso = [0,0]
+@sem_sexo = [0,0]
 @sem_filtros_extra = [0]
 
 	def atualiza_buffer()
@@ -77,32 +78,54 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 		check_Local.sensitive = w.active? ? true : false
 	end
 
-	def gera_caso_controle(w)
-		if (@sem_caso[w-1]==0)
-			@sem_caso[w-1] = 1
-		else 
-			@sem_caso[w-1] = 0
-		end
-    $grafoExemplo.desativar_todos()
-    if (@sem_caso[0]==1)
-      $grafoExemplo.ativa_caso()
+	def gera_ativos(escopo, w)
+    if (escopo == "Caso_Controle")
+	  	if (@sem_caso[w-1]==0)
+		  	@sem_caso[w-1] = 1
+		  else 
+			 @sem_caso[w-1] = 0
+		  end
     end
-    if (@sem_caso[1]==1)
-      $grafoExemplo.ativa_controle()
+    
+    if (escopo == "Sexo")
+	  	if (@sem_sexo[w-1]==0)
+		  	@sem_sexo[w-1] = 1
+		  else 
+			 @sem_sexo[w-1] = 0
+     end
     end
-      
+    
+    $grafoExemplo.ativar_todos()
+    
+    if ((@sem_caso[0]+@sem_caso[1]) == 1)
+      if (@sem_caso[0]==1)
+        $grafoExemplo.desativa_controle()
+      end
+      if (@sem_caso[1]==1)
+        $grafoExemplo.desativa_caso()
+      end
+    end
+    
+    if ((@sem_sexo[0]+@sem_sexo[1]) == 1)
+      if (@sem_sexo[0]==1)
+        $grafoExemplo.desativa_feminino()
+      end
+      if (@sem_sexo[1]==1)
+        $grafoExemplo.desativa_masculino()
+      end
+    end
+    
+    if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) )
+      $grafoExemplo.desativar_todos()
+    end
 		atualiza_buffer()
 	end
+  
 
   def gera_lugares(escopo, w)
     lugares_aux = [@sem_moradia, @sem_trabalho, @sem_estudo, @sem_lazer]
     lugares = lugares_aux[escopo-1]
-      if (@sem_caso[0]==1)
-        $grafoExemplo.ativa_caso()
-      end
-      if (@sem_caso[1]==1)
-        $grafoExemplo.ativa_controle()
-      end
+      
     if (lugares[w-1]==0)
 			lugares[w-1] = 1
       #Essa parte executa caso seja um novo lugar selecionado Otimização feita para salvar processamento
@@ -153,7 +176,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	window.title = "GraphTube"
 	window.border_width = 10
-	window.set_size_request(790, 500)
+	window.set_size_request(890, 600)
 	
 	window.signal_connect('delete_event') do
 		Gtk.main_quit
@@ -172,7 +195,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	check_caso = Gtk::CheckButton.new("Casos")
 
 	check_caso.signal_connect("toggled") do |w|
-		gera_caso_controle(1)
+		gera_ativos( "Caso_Controle", 1)
 
 	end
 	caixa_caso_controle.pack_start(check_caso,false,true,0)	
@@ -180,7 +203,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	check_controle = Gtk::CheckButton.new("Controles")
 
 	check_controle.signal_connect("toggled") do |w|
-		gera_caso_controle(2)
+		gera_ativos( "Caso_Controle", 2)
 
 	end
 	caixa_caso_controle.pack_start(check_controle,false,true,0)
@@ -189,6 +212,36 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 
 #---------------------------------------------------------------------------------------------#	
+
+
+
+
+#-------------------------------------CAIXA DE SEXOS-------------------------------#
+
+
+	caixa_sexos = Gtk::HBox.new(true,10)
+	check_masculino = Gtk::CheckButton.new("Masculino")
+
+	check_masculino.signal_connect("toggled") do |w|
+		gera_ativos( "Sexo", 1)
+
+	end
+	caixa_sexos.pack_start(check_masculino,false,true,0)	
+
+	check_feminino = Gtk::CheckButton.new("Feminino")
+
+	check_feminino.signal_connect("toggled") do |w|
+		gera_ativos( "Sexo", 2)
+
+	end
+	caixa_sexos.pack_start(check_feminino,false,true,0)
+
+	caixa_comandos.pack_start(caixa_sexos,false,true,0)
+
+
+#---------------------------------------------------------------------------------------------#	
+
+
 
 #-----------------------------COMBOBOXs--------------------------------------------------------#	
   # A INICIAL

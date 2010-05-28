@@ -165,26 +165,52 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   end
   
 #função para escolher os casos
-  def ativa_caso()
+  def desativa_controle()
     @pessoas.each do |pessoa|	
       id = pessoa.interview_id()
-      if (id[0] == 49) #ASCI para "1", que significa que é um caso 
-        pessoa.set_ativo(1)
+      if (id[0] == 50) #ASCI para "1", que significa que é um caso 
+        pessoa.set_ativo(0)
       end 
     end
   end
 
 #função para escolher os controles
-  def ativa_controle()
+  def desativa_caso()
     @pessoas.each do |pessoa|
       id = pessoa.interview_id()
-      if (id[0] == 50 )#ASCI para "2", que significa que é um controle 
-        pessoa.set_ativo(1)
+      if (id[0] == 49 )#ASCI para "2", que significa que é um controle 
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+  #função para escolher as pessoas do sexo masculino
+  def desativa_feminino()
+    @pessoas.each do |pessoa|	
+      if (pessoa.sexo == "2")
+        pessoa.set_ativo(0)
       end 
     end
   end
 
-#função para desativar todas as pessoas
+  #função para escolher as pessoas do sexo feminino
+  def desativa_masculino()
+    @pessoas.each do |pessoa|
+      if (pessoa.sexo == "1")
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+
+#função para ativar todas as pessoas
+  def ativar_todos()
+    @pessoas.each do |pessoa|
+     pessoa.set_ativo(1) 
+    end
+  end
+  
+  #função para desativar todas as pessoas
   def desativar_todos()
     @pessoas.each do |pessoa|
      pessoa.set_ativo(0) 
@@ -342,7 +368,9 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
       end
       arquivo.write("\n")
     end  
-    
+    arquivo.write(i)
+    arquivo.write("\n")
+    arquivo.write(i)
     #Isso imprime a matriz inteira no arquivo
     #@matriz_adj.each do |linha|
      # linha.each do |casa|
