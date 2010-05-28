@@ -106,6 +106,18 @@ class ViewPP
   #---------------------------------------------------------------------------------------------#
   
   
+    #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE DISTANCIAS MINIMAS---------------------------------------#
+	  botao_exportar = Gtk::Button.new("Exportar Matriz de Distancias Minimas")
+
+	  botao_exportar.signal_connect("clicked") do |w|
+  		gera_arquivo(window,"matrix_dist", @grafoPP)
+	  end
+
+
+	
+	  caixa_comandos.pack_start(botao_exportar,false,false,0)
+  #---------------------------------------------------------------------------------------------#
+  
    
     window.add(caixa_comandos)
     

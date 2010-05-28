@@ -227,6 +227,12 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     return @arestas
   end
   
+# Retorna a lista de pessoas do grafo
+  def pessoas()
+    return @pessoas
+  end
+  
+  
 # Limpa o Grafo, retirando suas arestas e vertices (Mas não as pessoas)
   def clear_grafo()
     @vertices = []
@@ -360,8 +366,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
       @matriz_adj[b][a] = 1
     end
     
-    @matriz_adj[0][0] = 1
-    
+    #Isso imprime a matriz inteira no arquivo.
     for q in 0 .. (i-1)
       for w in 0 .. (i-1)
         arquivo.write("#{@matriz_adj[q][w]}")
@@ -371,14 +376,6 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     arquivo.write(i)
     arquivo.write("\n")
     arquivo.write(i)
-    #Isso imprime a matriz inteira no arquivo
-    #@matriz_adj.each do |linha|
-     # linha.each do |casa|
-    #    arquivo.write("#{casa}")
-     # end
-     # arquivo.write("\n")
-   # end
-    
     
     arquivo.close
 	  return arquivo
