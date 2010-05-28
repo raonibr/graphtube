@@ -235,6 +235,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     return @arestas
   end
   
+# Retorna todas as arestas do grafo
+  def pessoas()
+    return @pessoas
+  end
+  
 # Limpa o Grafo, retirando suas arestas e vertices (Mas não as pessoas)
   def clear_grafo()
     @vertices = []
