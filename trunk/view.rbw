@@ -161,8 +161,10 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
     if (@filename)
       if(tipo == "net")
         grafo_usado.imprime_pajek(@filename+".net")
+      elsif(tipo == "matrix")
+        grafo_usado.imprime_matriz_adjacencias(@filename+".txt")
       else
-        grafo_usado.imprime_matriz_adjacencias(@filename+".net")
+        grafo_usado.imprime_matriz_distancias_minimas(@filename+".txt")
       end
     end
 	end
