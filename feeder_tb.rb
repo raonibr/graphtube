@@ -20,14 +20,29 @@ class Feeder
   db = SQLite3::Database.open( "Database.sqlite" )
 
 
+  #Primeiro passo é pegar as informações da tabela clínica e arrumar no seu hash.
+  @banco_clinico = db.execute( "SELECT t1.NoQES, t1.SEXO, t1.IDADE FROM clinico_tab AS t1" )
+  @hash_clinico = Hash[]
+  @banco_clinico.each do |clinico|
+      if (@hash_clinico[clinico[0]] == nil)
+        @hash_clinico[clinico[0]] = []
+        @hash_clinico[clinico[0]] << [clinico[1],clinico[2]]
+      else
+        @hash_clinico[clinico[0]] << [clinico[1],clinico[2]]
+      end
+  end
+
+  #Em seguida recuperar as informações de lugar um por um.
   @locais_moradia = db.execute( "SELECT t2.CIDADE_M, t2.BAIRRO_M, t2.END_M, t2.NUMERO_M, t2.TEMPO, t2.TEMPOf, t2.Lat_Morou, t2.Long_Morou, t2.NoQES FROM moradia AS t2"  )
   @hash_moradia = Hash[]
   @locais_moradia.each do |local|
       if (@hash_moradia[local[8]] == nil)
         @hash_moradia[local[8]] = []
-        @hash_moradia[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      end
+      if ((local[6])and(local[7]))
+      @hash_moradia[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6].chomp("\302\260"),local[7].chomp("\302\260")]
       else
-        @hash_moradia[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      @hash_moradia[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
       end
   end
   
@@ -38,9 +53,11 @@ class Feeder
   @locais_trabalho.each do |local|
       if (@hash_trabalho[local[8]] == nil)
         @hash_trabalho[local[8]] = []
-        @hash_trabalho[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      end
+      if (local[6])
+      @hash_trabalho[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6].chomp("\302\260"),local[7].chomp("\302\260")]
       else
-        @hash_trabalho[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      @hash_trabalho[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
       end
   end
   
@@ -52,9 +69,11 @@ class Feeder
   @locais_estudo.each do |local|
       if (@hash_estudo[local[8]] == nil)
         @hash_estudo[local[8]] = []
-        @hash_estudo[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      end
+      if (local[6])
+      @hash_estudo[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6].chomp("\302\260"),local[7].chomp("\302\260")]
       else
-        @hash_estudo[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
+      @hash_estudo[local[8]] << [local[0],local[1],local[2],local[3],local[4],local[5],local[6],local[7]]
       end
   end
   
@@ -65,9 +84,12 @@ class Feeder
   @locais_lazer.each do |local|
       if (@hash_lazer[local[6]] == nil)
         @hash_lazer[local[6]] = []
+      end
         @hash_lazer[local[6]] << [local[0],local[1],local[2],local[3],local[4],local[5]]
+      if ((local[4])and(local[5]))
+      @hash_lazer[local[6]] << [local[0],local[1],local[2],local[3],local[4].chomp("\302\260"),local[5].chomp("\302\260")]
       else
-        @hash_lazer[local[6]] << [local[0],local[1],local[2],local[3],local[4],local[5]]
+      @hash_lazer[local[6]] << [local[0],local[1],local[2],local[3],local[4],local[5]]
       end
   end
   
@@ -80,19 +102,25 @@ class Feeder
     bairro = pessoa[2]
     endereco = pessoa[3]
     
-    #Invoca os locais de moradia de uma pessoa
-    #tabela_local_mora = db.execute( "SELECT t2.CIDADE_M, t2.BAIRRO_M, t2.END_M, t2.NUMERO_M, t2.TEMPO, t2.TEMPOf, t2.Lat_Morou, t2.Long_Morou FROM tabind AS t1, moradia AS t2 WHERE (t1.NoQES = t2.NoQES) AND t1.NoQES = \"#{id}\""  )
+    #Invoca informacoes do questionário clínico, como sexo e idade.
+    if @hash_clinico[id]
+      sexo = @hash_clinico[id][0][0]
+      idade = @hash_clinico[id][0][1]
+    else
+      sexo = 0
+      idade = 0
+    end   
     
+    #Invoca os locais de moradia de uma pessoa
     if @hash_moradia[id]
       tabela_local_mora = @hash_moradia[id]
     else
       tabela_local_mora = []
     end   
         
+    #pp @hash_moradia[id]
     
     #Invoca os locais de trabalho de uma pessoa
-    #tabela_local_trab = db.execute( "SELECT t2.Cidade_T, t2.Bairro_T, t2.Endereco_T, t2.Empresa_T, t2.Peri_trabi, t2.Peri_trabf, t2.Lat_Trabalho, t2.Long_Trabalho FROM tabind AS t1, tab_trab AS t2 WHERE (t1.NoQES = t2.NoQES) AND t1.NoQES = \"#{id}\""  )
-    
     if @hash_trabalho[id]
       tabela_local_trab = @hash_trabalho[id]
     else
@@ -101,8 +129,6 @@ class Feeder
     
     
     #Invoca os locais de estudo de uma pessoa
-    #tabela_local_estudo = db.execute( "SELECT t2.Cidade_E, t2.Bairro_E, t2.End_E, t2.Nome_Escola, t2.Peri_Ei, t2.Peri_Ef, t2.Lat_Estudo, t2.Long_Estudo FROM tabind AS t1, tab_estud AS t2 WHERE (t1.NoQES = t2.NoQES) AND t1.NoQES = \"#{id}\""  )
-    
     if @hash_estudo[id]
       tabela_local_estudo = @hash_estudo[id]
     else
@@ -110,9 +136,6 @@ class Feeder
     end   
     
     #Invoca os locais de lazer de uma pessoa
-    #tabela_local_lazer = db.execute( "SELECT t2.Cidade_L, t2.Bairro_L, t2.Endereco_L, t2.Local , t2.Lat_Lazer, t2.Long_Lazer FROM tabind AS t1, tab_loc AS t2 WHERE (t1.NoQES = t2.NoQES) AND t1.NoQES = \"#{id}\""  )
-    
-    
     if @hash_lazer[id]
       tabela_local_lazer = @hash_lazer[id]
     else
@@ -121,7 +144,7 @@ class Feeder
     
     
     #O ultimo parametro Ã© o registro se essa pessoa estÃ¡ ativa ou nÃ£o (estÃ¡ sendo levada em consideraÃ§Ã£o no grafo). Inicialmente todos sÃ£o inativos     
-    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer,1)
+    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer, sexo, idade, 1)
 	
     @pessoa << pessoa_nova
   end
