@@ -41,6 +41,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_caso = [0,0]
 @sem_sexo = [0,0]
 @sem_filtros_extra = [0]
+@idadeinicial = 0 
+@idadefinal = 99
 
 	def atualiza_buffer()
 		$grafoExemplo.clear_grafo()
@@ -114,9 +116,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
         $grafoExemplo.desativa_masculino()
       end
     end
-    if (escopo == "idade")
-      $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
-    end
+    
+    $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
+    
     if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) )
       $grafoExemplo.desativar_todos()
     end
