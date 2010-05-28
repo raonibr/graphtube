@@ -114,7 +114,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
         $grafoExemplo.desativa_masculino()
       end
     end
-    
+    if (escopo == "idade")
+      $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
+    end
     if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) )
       $grafoExemplo.desativar_todos()
     end
@@ -161,10 +163,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
     if (@filename)
       if(tipo == "net")
         grafo_usado.imprime_pajek(@filename+".net")
-      elsif(tipo == "matrix")
-        grafo_usado.imprime_matriz_adjacencias(@filename+".txt")
       else
-        grafo_usado.imprime_matriz_distancias_minimas(@filename+".txt")
+        grafo_usado.imprime_matriz_adjacencias(@filename+".net")
       end
     end
 	end
@@ -243,6 +243,44 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 #---------------------------------------------------------------------------------------------#	
 
+#-----------------------------COMBOBOXs DE IDADE--------------------------------------------------------#	
+  # A INICIAL
+  
+	combobox = Gtk::ComboBox.new
+	
+	for i in (0..99)
+		combobox.append_text(i.to_s())
+	end
+  
+  combobox.active = 0
+
+  combobox.signal_connect("changed") do |d|
+    @idadeinicial = combobox.active_text
+    gera_ativos("idade",1)
+  end
+  
+  #A FINAL
+  combobox2 = Gtk::ComboBox.new
+  
+  for i in (0..99)
+		combobox2.append_text(i.to_s())
+	end
+
+
+	combobox2.active = 99
+  combobox2.signal_connect("changed") do |d|
+    @idadefinal = combobox2.active_text
+    gera_ativos("idade",1)
+  end
+  
+  
+  caixa_comboboxs_idade = Gtk::HBox.new(true,10)
+
+  caixa_comboboxs_idade.pack_start(combobox,false,true,0)
+  caixa_comboboxs_idade.pack_start(combobox2,false,true,0)
+
+	caixa_comandos.pack_start(caixa_comboboxs_idade,false,true,0)
+#---------------------------------------------------------------------------------------------#
 
 
 #-----------------------------COMBOBOXs--------------------------------------------------------#	

@@ -216,6 +216,14 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
      pessoa.set_ativo(0) 
     end
   end
+  
+  def desativar_pessoas_idade(min,max)
+    @pessoas.each do |pessoa|
+      if ((pessoa.idade.to_i() <= min.to_i()) or (pessoa.idade.to_i() >= max.to_i()))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
 
 # Retorna todos os vertices do grafo
   def vertices()
@@ -226,12 +234,6 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   def arestas()
     return @arestas
   end
-  
-# Retorna a lista de pessoas do grafo
-  def pessoas()
-    return @pessoas
-  end
-  
   
 # Limpa o Grafo, retirando suas arestas e vertices (Mas não as pessoas)
   def clear_grafo()
@@ -366,7 +368,8 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
       @matriz_adj[b][a] = 1
     end
     
-    #Isso imprime a matriz inteira no arquivo.
+    @matriz_adj[0][0] = 1
+    
     for q in 0 .. (i-1)
       for w in 0 .. (i-1)
         arquivo.write("#{@matriz_adj[q][w]}")
@@ -376,6 +379,14 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     arquivo.write(i)
     arquivo.write("\n")
     arquivo.write(i)
+    #Isso imprime a matriz inteira no arquivo
+    #@matriz_adj.each do |linha|
+     # linha.each do |casa|
+    #    arquivo.write("#{casa}")
+     # end
+     # arquivo.write("\n")
+   # end
+    
     
     arquivo.close
 	  return arquivo
