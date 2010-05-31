@@ -40,6 +40,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_lazer = [0,0,0,0]
 @sem_caso = [0,0]
 @sem_sexo = [0,0]
+@sem_hcontato = [0,0]
 @sem_filtros_extra = [0]
 @idadeinicial = 0 
 @idadefinal = 99
@@ -95,6 +96,14 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 		  else 
 			 @sem_sexo[w-1] = 0
      end
+   end
+   
+    if (escopo == "hcontato")
+	  	if (@sem_hcontato[w-1]==0)
+		  	@sem_hcontato[w-1] = 1
+		  else 
+			 @sem_hcontato[w-1] = 0
+     end
     end
     
     $grafoExemplo.ativar_todos()
@@ -117,9 +126,18 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     end
     
+    if ((@sem_hcontato[0]+@sem_hcontato[1]) == 1)
+      if (@sem_hcontato[0]==1)
+        $grafoExemplo.desativa_hcontato_nao()
+      end
+      if (@sem_hcontato[1]==1)
+        $grafoExemplo.desativa_hcontato_sim()
+      end
+    end
+    
     $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
     
-    if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) )
+    if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) or ((@sem_hcontato[0]+@sem_hcontato[1])==0)  )
       $grafoExemplo.desativar_todos()
     end
 		atualiza_buffer()
@@ -285,6 +303,31 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	caixa_comandos.pack_start(caixa_comboboxs_idade,false,true,0)
 #---------------------------------------------------------------------------------------------#
+
+#-------------------------------------CAIXA DE HISTORIA DE CONTATO-------------------------------#
+
+
+	caixa_hcontato = Gtk::HBox.new(true,10)
+	check_sim = Gtk::CheckButton.new("Sim")
+
+	check_sim.signal_connect("toggled") do |w|
+		gera_ativos( "hcontato", 1)
+
+	end
+	caixa_hcontato.pack_start(check_sim,false,true,0)	
+
+	check_nao = Gtk::CheckButton.new("Nao")
+
+	check_nao.signal_connect("toggled") do |w|
+		gera_ativos( "hcontato", 2)
+
+	end
+	caixa_hcontato.pack_start(check_nao,false,true,0)
+
+	caixa_comandos.pack_start(caixa_hcontato,false,true,0)
+
+
+#---------------------------------------------------------------------------------------------#	
 
 
 #-----------------------------COMBOBOXs--------------------------------------------------------#	

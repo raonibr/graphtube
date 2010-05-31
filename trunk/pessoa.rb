@@ -17,7 +17,7 @@ nova_pessoa = Pessoa.new(interview_id, cidade_entrevista, bairro_entrevista, end
 
 class Pessoa
 sinal = 0
-  def initialize(interview_id, cidade_entrevista, bairro_entrevista, endereco_entrevista, locais_moradia, locais_trabalho, locais_estudo, locais_lazer, sexo, idade, ativo)
+  def initialize(interview_id, cidade_entrevista, bairro_entrevista, endereco_entrevista, locais_moradia, locais_trabalho, locais_estudo, locais_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, ativo)
   
     @interview_id = interview_id
     @cidade_entrevista = cidade_entrevista 
@@ -29,11 +29,32 @@ sinal = 0
     @locais_lazer = locais_lazer
     @sexo = sexo
     @idade = idade
+    @hcontato = hcontato
+    @reativacao = reativacao
+    @tempo_estudo = tempo_estudo
+    @renda = renda
     @ativo = ativo
+    
   end
 
   def interview_id()
     return @interview_id
+  end
+  
+  def renda()
+    return @renda
+  end
+  
+  def tempo_estudo()
+    return @tempo_estudo
+  end
+  
+  def reativacao()
+    return @reativacao
+  end
+  
+  def hcontato()
+    return @hcontato
   end
 
   def idade()
