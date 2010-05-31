@@ -202,6 +202,22 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     end
   end
   
+  def desativa_hcontato_sim()
+    @pessoas.each do |pessoa|
+      if ((pessoa.hcontato == "1") or (pessoa.hcontato == "8") or (pessoa.hcontato == "9"))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+  def desativa_hcontato_nao()
+    @pessoas.each do |pessoa|
+      if ((pessoa.hcontato == "2") or (pessoa.hcontato == "8") or (pessoa.hcontato == "9"))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+
 
 #função para ativar todas as pessoas
   def ativar_todos()
@@ -357,11 +373,13 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     @hash_aux_matriz = Hash[]
     cont = 0
     @vertices.each do |vertice|
-      if (vertice[0]=="ID")
-	     @hash_aux_matriz[vertice[1]] = cont
-	    else
+      if (vertice.is_a?(String))
        @hash_aux_matriz[vertice] = cont
-	    end
+      elsif (vertice[0]=="ID")
+	      @hash_aux_matriz[vertice[1]] = cont
+      else
+        @hash_aux_matriz[vertice[0]] = cont
+      end
       cont=cont+1
     end
     
@@ -372,8 +390,6 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
       @matriz_adj[a][b] = 1
       @matriz_adj[b][a] = 1
     end
-    
-    @matriz_adj[0][0] = 1
     
     for q in 0 .. (i-1)
       for w in 0 .. (i-1)

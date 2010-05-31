@@ -21,14 +21,14 @@ class Feeder
 
 
   #Primeiro passo é pegar as informações da tabela clínica e arrumar no seu hash.
-  @banco_clinico = db.execute( "SELECT t1.NoQES, t1.SEXO, t1.IDADE FROM clinico_tab AS t1" )
+  @banco_clinico = db.execute( "SELECT t1.NoQES, t1.SEXO, t1.IDADE, t1.v57, t1.v63, t1.v24, t1.v32 FROM clinico_tab AS t1" )
   @hash_clinico = Hash[]
   @banco_clinico.each do |clinico|
       if (@hash_clinico[clinico[0]] == nil)
         @hash_clinico[clinico[0]] = []
-        @hash_clinico[clinico[0]] << [clinico[1],clinico[2]]
+        @hash_clinico[clinico[0]] << [clinico[1],clinico[2],clinico[3],clinico[4],clinico[5],clinico[6]]
       else
-        @hash_clinico[clinico[0]] << [clinico[1],clinico[2]]
+        @hash_clinico[clinico[0]] << [clinico[1],clinico[2],clinico[3],clinico[4],clinico[5],clinico[6]]
       end
   end
 
@@ -106,9 +106,17 @@ class Feeder
     if @hash_clinico[id]
       sexo = @hash_clinico[id][0][0]
       idade = @hash_clinico[id][0][1]
+      hcontato = @hash_clinico[id][0][2]
+      reativacao = @hash_clinico[id][0][3]
+      tempo_estudo = @hash_clinico[id][0][4]
+      renda = @hash_clinico[id][0][5]
     else
       sexo = 0
       idade = 0
+      hcontato = 0
+      reativacao = 0
+      tempo_estudo = 0
+      renda = 0
     end   
     
     #Invoca os locais de moradia de uma pessoa
@@ -144,7 +152,7 @@ class Feeder
     
     
     #O ultimo parametro Ã© o registro se essa pessoa estÃ¡ ativa ou nÃ£o (estÃ¡ sendo levada em consideraÃ§Ã£o no grafo). Inicialmente todos sÃ£o inativos     
-    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer, sexo, idade, 1)
+    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, 1)
 	
     @pessoa << pessoa_nova
   end
