@@ -18,8 +18,9 @@ class Feeder
   def gera_pessoas()
   @pessoa = []
   db = SQLite3::Database.open( "Database.sqlite" )
-
-
+  
+  $faixas_de_renda = db.execute("SELECT DISTINCT t1.v32 FROM clinico_tab AS t1 WHERE t1.v32 IS NOT NULL ORDER BY t1.v32 ASC")
+  
   #Primeiro passo é pegar as informações da tabela clínica e arrumar no seu hash.
   @banco_clinico = db.execute( "SELECT t1.NoQES, t1.SEXO, t1.IDADE, t1.v57, t1.v63, t1.v24, t1.v32 FROM clinico_tab AS t1" )
   @hash_clinico = Hash[]

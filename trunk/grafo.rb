@@ -204,7 +204,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   
   def desativa_hcontato_sim()
     @pessoas.each do |pessoa|
-      if ((pessoa.hcontato == "1") or (pessoa.hcontato == "8") or (pessoa.hcontato == "9"))
+      if ((pessoa.hcontato == "1") or (pessoa.hcontato == "7") or (pessoa.hcontato == "8"))
         pessoa.set_ativo(0)
       end 
     end
@@ -212,7 +212,24 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   
   def desativa_hcontato_nao()
     @pessoas.each do |pessoa|
-      if ((pessoa.hcontato == "2") or (pessoa.hcontato == "8") or (pessoa.hcontato == "9"))
+      if ((pessoa.hcontato == "2") or (pessoa.hcontato == "7") or (pessoa.hcontato == "8"))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+
+
+  def desativa_reativacao_sim()
+    @pessoas.each do |pessoa|
+      if ((pessoa.reativacao == "1") or (pessoa.reativacao == "9"))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+  def desativa_reativacao_nao()
+    @pessoas.each do |pessoa|
+      if ((pessoa.reativacao == "2") or (pessoa.reativacao == "9"))
         pessoa.set_ativo(0)
       end 
     end
@@ -236,6 +253,22 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   def desativar_pessoas_idade(min,max)
     @pessoas.each do |pessoa|
       if ((pessoa.idade.to_i() < min.to_i()) or (pessoa.idade.to_i() > max.to_i()))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+  def desativar_pessoas_renda(min,max)
+    @pessoas.each do |pessoa|
+      if ((pessoa.renda.to_i() < min.to_i()) or (pessoa.renda.to_i() > max.to_i()))
+        pessoa.set_ativo(0)
+      end 
+    end
+  end
+  
+  def desativar_pessoas_escolaridade(min,max)
+    @pessoas.each do |pessoa|
+      if ((pessoa.tempo_estudo.to_i() < min.to_i()) or (pessoa.tempo_estudo.to_i() > max.to_i()))
         pessoa.set_ativo(0)
       end 
     end
