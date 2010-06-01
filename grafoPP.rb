@@ -153,7 +153,7 @@ class GrafoPP < Grafo
         if ((@hash_aux_pessoas[@vertices[q][1]].length() !=0) and (@hash_aux_pessoas[@vertices[w][1]].length() !=0))
           dist = distancia_minima(@hash_aux_pessoas[@vertices[q][1]],@hash_aux_pessoas[@vertices[w][1]])
         else
-          dist = 0 # Essa linha define o valor da distancia se a pessoa não possuir georeferencia
+          dist = 9999999 # Essa linha define o valor da distancia se a pessoa não possuir georeferencia
         end
         a = @hash_aux_matriz[@vertices[q][1]]
         b = @hash_aux_matriz[@vertices[w][1]]

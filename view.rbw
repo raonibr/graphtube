@@ -41,9 +41,14 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_caso = [0,0]
 @sem_sexo = [0,0]
 @sem_hcontato = [0,0]
+@sem_reativacao = [0,0]
 @sem_filtros_extra = [0]
 @idadeinicial = 0 
 @idadefinal = 99
+@renda_incial = 0
+@renda_final = 9999999
+@escolaridade_incial = 0
+@escolaridade_final = 15
 
 	def atualiza_buffer()
 		$grafoExemplo.clear_grafo()
@@ -106,6 +111,14 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
      end
     end
     
+    if (escopo == "reativacao")
+	  	if (@sem_reativacao[w-1]==0)
+		  	@sem_reativacao[w-1] = 1
+		  else 
+			 @sem_reativacao[w-1] = 0
+     end
+    end
+    
     $grafoExemplo.ativar_todos()
     
     if ((@sem_caso[0]+@sem_caso[1]) == 1)
@@ -135,9 +148,20 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     end
     
-    $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
+    if ((@sem_reativacao[0]+@sem_reativacao[1]) == 1)
+      if (@sem_reativacao[0]==1)
+        $grafoExemplo.desativa_reativacao_nao()
+      end
+      if (@sem_reativacao[1]==1)
+        $grafoExemplo.desativa_reativacao_sim()
+      end
+    end
     
-    if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) or ((@sem_hcontato[0]+@sem_hcontato[1])==0)  )
+    $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
+    $grafoExemplo.desativar_pessoas_renda(@renda_inicial, @renda_final)
+    $grafoExemplo.desativar_pessoas_escolaridade(@escolaridade_inicial, @escolaridade_final)
+    
+    if (((@sem_caso[0]+@sem_caso[1]) == 0) or ((@sem_sexo[0]+@sem_sexo[1]) == 0) or ((@sem_hcontato[0]+@sem_hcontato[1])==0) or ((@sem_reativacao[0]+@sem_reativacao[1])==0) )
       $grafoExemplo.desativar_todos()
     end
 		atualiza_buffer()
@@ -216,6 +240,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 
 	caixa_caso_controle = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Grupo:")
+  caixa_caso_controle.pack_start(label,false,true,0)	
+  
 	check_caso = Gtk::CheckButton.new("Casos")
 
 	check_caso.signal_connect("toggled") do |w|
@@ -244,7 +271,10 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 
 	caixa_sexos = Gtk::HBox.new(true,10)
-	check_masculino = Gtk::CheckButton.new("Masculino")
+  label = Gtk::Label.new("Sexo:")
+  caixa_sexos.pack_start(label,false,true,0)	
+  
+  check_masculino = Gtk::CheckButton.new("Masculino")
 
 	check_masculino.signal_connect("toggled") do |w|
 		gera_ativos( "Sexo", 1)
@@ -297,6 +327,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   
   
   caixa_comboboxs_idade = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Faixa de idade:")
+  caixa_comboboxs_idade.pack_start(label,false,true,0)	
 
   caixa_comboboxs_idade.pack_start(combobox,false,true,0)
   caixa_comboboxs_idade.pack_start(combobox2,false,true,0)
@@ -304,16 +336,110 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	caixa_comandos.pack_start(caixa_comboboxs_idade,false,true,0)
 #---------------------------------------------------------------------------------------------#
 
+
+
+
+
+#-----------------------------COMBOBOXs DE RENDA--------------------------------------------------------#	
+  # A INICIAL
+  
+	combobox = Gtk::ComboBox.new
+	
+	$faixas_de_renda.each do |r|
+		combobox.append_text(r.to_s())
+	end
+  
+  combobox.active = 0
+
+  combobox.signal_connect("changed") do |d|
+    @renda_inicial = combobox.active_text
+    gera_ativos("renda",1)
+  end
+  
+  #A FINAL
+  combobox2 = Gtk::ComboBox.new
+  
+	$faixas_de_renda.each do |r|
+		combobox2.append_text(r.to_s())
+	end
+
+
+	combobox2.active = $faixas_de_renda.length() -1
+  combobox2.signal_connect("changed") do |d|
+    @renda_final  = combobox2.active_text
+    gera_ativos("renda",1)
+  end
+  
+  
+  caixa_comboboxs_renda = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Faixa de renda:")
+  caixa_comboboxs_renda.pack_start(label,false,true,0)	
+
+  caixa_comboboxs_renda.pack_start(combobox,false,true,0)
+  caixa_comboboxs_renda.pack_start(combobox2,false,true,0)
+
+	caixa_comandos.pack_start(caixa_comboboxs_renda,false,true,0)
+#---------------------------------------------------------------------------------------------#
+
+
+
+#-----------------------------COMBOBOXs DE TEMPO DE ESTUDO--------------------------------------------------------#	
+  # A INICIAL
+  
+	combobox = Gtk::ComboBox.new
+	
+	for i in (0..15)
+		combobox.append_text(i.to_s())
+	end
+  
+  combobox.active = 0
+
+  combobox.signal_connect("changed") do |d|
+    @escolaridade_inicial = combobox.active_text
+    gera_ativos("escola",1)
+  end
+  
+  #A FINAL
+  combobox2 = Gtk::ComboBox.new
+  
+  for i in (0..15)
+		combobox2.append_text(i.to_s())
+	end
+
+
+	combobox2.active = 15
+  combobox2.signal_connect("changed") do |d|
+    @escolaridade_final = combobox2.active_text
+    gera_ativos("escola",1)
+  end
+  
+  
+  caixa_comboboxs_tempo_estudo = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Anos de estudo:")
+  caixa_comboboxs_tempo_estudo.pack_start(label,false,true,0)	
+
+  caixa_comboboxs_tempo_estudo.pack_start(combobox,false,true,0)
+  caixa_comboboxs_tempo_estudo.pack_start(combobox2,false,true,0)
+
+	caixa_comandos.pack_start(caixa_comboboxs_tempo_estudo,false,true,0)
+#---------------------------------------------------------------------------------------------#
+
+
+
 #-------------------------------------CAIXA DE HISTORIA DE CONTATO-------------------------------#
 
 
 	caixa_hcontato = Gtk::HBox.new(true,10)
-	check_sim = Gtk::CheckButton.new("Sim")
-
+  label = Gtk::Label.new("Historia de contato:")
+  caixa_hcontato.pack_start(label,false,true,0)	
+  
+  check_sim = Gtk::CheckButton.new("Sim")
+  
 	check_sim.signal_connect("toggled") do |w|
 		gera_ativos( "hcontato", 1)
 
 	end
+  
 	caixa_hcontato.pack_start(check_sim,false,true,0)	
 
 	check_nao = Gtk::CheckButton.new("Nao")
@@ -330,7 +456,39 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 #---------------------------------------------------------------------------------------------#	
 
 
-#-----------------------------COMBOBOXs--------------------------------------------------------#	
+#-------------------------------------CAIXA DE REATIVACÃO------------------------------#
+
+
+	caixa_reativa = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Reativacao:")
+  caixa_reativa.pack_start(label,false,true,0)	
+	check_sim = Gtk::CheckButton.new("Sim")
+
+	check_sim.signal_connect("toggled") do |w|
+		gera_ativos( "reativacao", 1)
+
+	end
+	caixa_reativa.pack_start(check_sim,false,true,0)	
+
+	check_nao = Gtk::CheckButton.new("Nao")
+
+	check_nao.signal_connect("toggled") do |w|
+		gera_ativos( "reativacao", 2)
+
+	end
+	caixa_reativa.pack_start(check_nao,false,true,0)
+
+	caixa_comandos.pack_start(caixa_reativa,false,true,0)
+
+
+#---------------------------------------------------------------------------------------------#	
+
+separator = Gtk::HSeparator.new
+caixa_comandos.pack_start(separator, false, true, 5)
+
+
+
+#-----------------------------COMBOBOXs DE PERIODO DE CONTATO --------------------------------------------------------#	
   # A INICIAL
   
 	combobox_inicio = Gtk::ComboBox.new
@@ -390,7 +548,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   
  
   caixa_comboboxs = Gtk::HBox.new(true,10)
-
+  label = Gtk::Label.new("Periodo de contato:")
+  caixa_comboboxs.pack_start(label,false,true,0)	
+  
   caixa_comboboxs.pack_start(combobox_inicio,false,true,0)
   caixa_comboboxs.pack_start(combobox_final,false,true,0)
 
