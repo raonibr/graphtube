@@ -298,30 +298,30 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 #-----------------------------COMBOBOXs DE IDADE--------------------------------------------------------#	
   # A INICIAL
   
-	combobox = Gtk::ComboBox.new
+	combobox_idade = Gtk::ComboBox.new
 	
 	for i in (0..99)
-		combobox.append_text(i.to_s())
+		combobox_idade.append_text(i.to_s())
 	end
   
-  combobox.active = 0
+  combobox_idade.active = 0
 
-  combobox.signal_connect("changed") do |d|
-    @idadeinicial = combobox.active_text
+  combobox_idade.signal_connect("changed") do |d|
+    @idadeinicial = combobox_idade.active_text
     gera_ativos("idade",1)
   end
   
   #A FINAL
-  combobox2 = Gtk::ComboBox.new
+  combobox_idade2 = Gtk::ComboBox.new
   
   for i in (0..99)
-		combobox2.append_text(i.to_s())
+		combobox_idade2.append_text(i.to_s())
 	end
 
 
-	combobox2.active = 99
-  combobox2.signal_connect("changed") do |d|
-    @idadefinal = combobox2.active_text
+	combobox_idade2.active = 99
+  combobox_idade2.signal_connect("changed") do |d|
+    @idadefinal = combobox_idade2.active_text
     gera_ativos("idade",1)
   end
   
@@ -330,8 +330,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   label = Gtk::Label.new("Faixa de idade:")
   caixa_comboboxs_idade.pack_start(label,false,true,0)	
 
-  caixa_comboboxs_idade.pack_start(combobox,false,true,0)
-  caixa_comboboxs_idade.pack_start(combobox2,false,true,0)
+  caixa_comboboxs_idade.pack_start(combobox_idade,false,true,0)
+  caixa_comboboxs_idade.pack_start(combobox_idade2,false,true,0)
 
 	caixa_comandos.pack_start(caixa_comboboxs_idade,false,true,0)
 #---------------------------------------------------------------------------------------------#
@@ -343,30 +343,30 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 #-----------------------------COMBOBOXs DE RENDA--------------------------------------------------------#	
   # A INICIAL
   
-	combobox = Gtk::ComboBox.new
+	combobox_renda = Gtk::ComboBox.new
 	
 	$faixas_de_renda.each do |r|
-		combobox.append_text(r.to_s())
+		combobox_renda.append_text(r.to_s())
 	end
   
-  combobox.active = 0
+  combobox_renda.active = 0
 
-  combobox.signal_connect("changed") do |d|
-    @renda_inicial = combobox.active_text
+  combobox_renda.signal_connect("changed") do |d|
+    @renda_inicial = combobox_renda.active_text
     gera_ativos("renda",1)
   end
   
   #A FINAL
-  combobox2 = Gtk::ComboBox.new
+  combobox_renda2 = Gtk::ComboBox.new
   
 	$faixas_de_renda.each do |r|
-		combobox2.append_text(r.to_s())
+		combobox_renda2.append_text(r.to_s())
 	end
 
 
-	combobox2.active = $faixas_de_renda.length() -1
-  combobox2.signal_connect("changed") do |d|
-    @renda_final  = combobox2.active_text
+	combobox_renda2.active = $faixas_de_renda.length() -1
+  combobox_renda2.signal_connect("changed") do |d|
+    @renda_final  = combobox_renda2.active_text
     gera_ativos("renda",1)
   end
   
@@ -375,8 +375,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   label = Gtk::Label.new("Faixa de renda:")
   caixa_comboboxs_renda.pack_start(label,false,true,0)	
 
-  caixa_comboboxs_renda.pack_start(combobox,false,true,0)
-  caixa_comboboxs_renda.pack_start(combobox2,false,true,0)
+  caixa_comboboxs_renda.pack_start(combobox_renda,false,true,0)
+  caixa_comboboxs_renda.pack_start(combobox_renda2,false,true,0)
 
 	caixa_comandos.pack_start(caixa_comboboxs_renda,false,true,0)
 #---------------------------------------------------------------------------------------------#
@@ -386,30 +386,30 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 #-----------------------------COMBOBOXs DE TEMPO DE ESTUDO--------------------------------------------------------#	
   # A INICIAL
   
-	combobox = Gtk::ComboBox.new
+	combobox_temp_est = Gtk::ComboBox.new
 	
 	for i in (0..15)
-		combobox.append_text(i.to_s())
+		combobox_temp_est.append_text(i.to_s())
 	end
   
-  combobox.active = 0
+  combobox_temp_est.active = 0
 
-  combobox.signal_connect("changed") do |d|
-    @escolaridade_inicial = combobox.active_text
+  combobox_temp_est.signal_connect("changed") do |d|
+    @escolaridade_inicial = combobox_temp_est.active_text
     gera_ativos("escola",1)
   end
   
   #A FINAL
-  combobox2 = Gtk::ComboBox.new
+  combobox_temp_est2 = Gtk::ComboBox.new
   
   for i in (0..15)
-		combobox2.append_text(i.to_s())
+		combobox_temp_est2.append_text(i.to_s())
 	end
 
 
-	combobox2.active = 15
-  combobox2.signal_connect("changed") do |d|
-    @escolaridade_final = combobox2.active_text
+	combobox_temp_est2.active = 15
+  combobox_temp_est2.signal_connect("changed") do |d|
+    @escolaridade_final = combobox_temp_est2.active_text
     gera_ativos("escola",1)
   end
   
@@ -418,8 +418,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   label = Gtk::Label.new("Anos de estudo:")
   caixa_comboboxs_tempo_estudo.pack_start(label,false,true,0)	
 
-  caixa_comboboxs_tempo_estudo.pack_start(combobox,false,true,0)
-  caixa_comboboxs_tempo_estudo.pack_start(combobox2,false,true,0)
+  caixa_comboboxs_tempo_estudo.pack_start(combobox_temp_est,false,true,0)
+  caixa_comboboxs_tempo_estudo.pack_start(combobox_temp_est2,false,true,0)
 
 	caixa_comandos.pack_start(caixa_comboboxs_tempo_estudo,false,true,0)
 #---------------------------------------------------------------------------------------------#
