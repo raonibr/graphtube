@@ -224,7 +224,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	window.title = "GraphTube"
 	window.border_width = 10
-	window.set_size_request(890, 600)
+	window.set_size_request(890, 730)
 	
 	window.signal_connect('delete_event') do
 		Gtk.main_quit
