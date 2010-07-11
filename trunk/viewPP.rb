@@ -2,9 +2,10 @@ require 'header'
 
 class ViewPP
 
-  def initialize(grafo_base)
+  def initialize(grafo_base, semaforo_global)
     @sem_filtros_extra = [0]
-    @grafoPP = GrafoPP.new(grafo_base)
+    @grafoPP = GrafoPP.new(grafo_base, semaforo_global)
+    
     #----------------------------------CRIA JANELA PRINCIPAL--------------------------------------#
     window = Gtk::Window.new
 
