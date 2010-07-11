@@ -67,7 +67,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 				$grafoExemplo.gerar_grafo_PL(LAZER,cont+1, @datainicial, @datafinal)
 			end
 		cont = cont + 1
-  end
+    end
     if (@sem_filtros_extra[0] == 0)
       $grafoExemplo.coloca_pessoas_todas()
     else
@@ -979,17 +979,6 @@ botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Local-Local")
 	caixa_comandos.pack_start(botao_exportar,true,false,0)
 #---------------------------------------------------------------------------------------------#
 
-#-------------------------------CRIA O BOTÃO SAIR---------------------------------------------#
-	botao_sair = Gtk::Button.new("Sair")
-	
-	botao_sair.signal_connect("clicked") do
-		Gtk.main_quit
-  end	
-  
-  
-	caixa_comandos.pack_start(botao_sair,true,true,0)
-	caixa_comandos.set_size_request(100,-1)
-#---------------------------------------------------------------------------------------------#
 
 #----------------------------------CRIA AS LABELS---------------------------------------------#
 	textviews = Gtk::Notebook.new

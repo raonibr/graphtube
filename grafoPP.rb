@@ -27,6 +27,8 @@ class GrafoPP < Grafo
   def initialize(grafo_base)
     @vertices = []
     @arestas = []
+    @vertices_aux = []
+    @vertices_todos = []
     
     @pessoas = grafo_base.pessoas()
     
@@ -185,5 +187,26 @@ class GrafoPP < Grafo
     arquivo.close
 	  return arquivo
   end
+  
+  
+  
+  # Função que coloca pessoas na lista de pessoas
+  def coloca_pessoas_todas()
+    @vertices = @vertives_todos
+  end
+  
+  def coloca_pessoas_ativas()
+    @arestas.each do |pessoa|
+      if !(@vertices_aux.include?(["ID",pessoa[0]]))
+        @vertices_aux << ["ID",pessoa[0]]
+      end
+      if !(@vertices_aux.include?(["ID",pessoa[1]]))
+        @vertices_aux << ["ID",pessoa[1]]
+      end
+    end
+    @vertives_todos = @vertices
+    @vertices = @vertices_aux
+  end
+  
 
 end

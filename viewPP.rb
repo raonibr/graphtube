@@ -3,6 +3,7 @@ require 'header'
 class ViewPP
 
   def initialize(grafo_base)
+    @sem_filtros_extra = [0]
     @grafoPP = GrafoPP.new(grafo_base)
     #----------------------------------CRIA JANELA PRINCIPAL--------------------------------------#
     window = Gtk::Window.new
@@ -27,7 +28,8 @@ class ViewPP
     textview_1.cursor_visible = false
 
     textview_1.border_width = 0
-
+    
+    @textview_1 = textview_1
 
     scrolled_textview_1 = Gtk::ScrolledWindow.new
 
@@ -50,6 +52,7 @@ class ViewPP
 
     textview_2.border_width = 0
 
+    @textview_2 = textview_2
 
     scrolled_textview_2 = Gtk::ScrolledWindow.new
 
@@ -60,6 +63,10 @@ class ViewPP
     scrolled_textview_2.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS)
   #---------------------------------------------------------------------------------------------#
   
+
+
+  
+  
   #----------------------------------CRIA AS LABELS---------------------------------------------#
 	textviews = Gtk::Notebook.new
 	label1 = Gtk::Label.new("Pessoas")
@@ -68,6 +75,27 @@ class ViewPP
 	textviews.append_page(scrolled_textview_2, label2)
   caixa_comandos.pack_start(textviews,true,true,0)
 	#---------------------------------------------------------------------------------------------#
+
+  
+  
+  #------------------------------CRIA A RADIOBOX DE EXCLUIR N√O ATIVOS------------------#
+
+caixa_opcao_exc_n_ativos = Gtk::HBox.new(true,10)
+check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
+
+	check_Excluir.signal_connect("toggled") do
+    if(@sem_filtros_extra[0] == 0)
+      @sem_filtros_extra[0] = 1
+    else
+      @sem_filtros_extra[0] = 0
+    end
+    atualiza_buffer_PP()
+  end
+
+	caixa_opcao_exc_n_ativos.pack_start(check_Excluir,true,true,0)
+  caixa_comandos.pack_start(caixa_opcao_exc_n_ativos,false,false,0)
+
+#---------------------------------------------------------------------------------------------#
 
   #------------------------------CRIA O BOT√ÉO DE DESENHAR---------------------------------------#
     botao_desenhar = Gtk::Button.new("Desenhar GRAFO")
@@ -124,6 +152,16 @@ class ViewPP
     window.show_all
   end
   
+    
+    def atualiza_buffer_PP()
+     if (@sem_filtros_extra[0] == 0)
+       @grafoPP.coloca_pessoas_todas()
+     else
+       @grafoPP.coloca_pessoas_ativas()
+     end
+     @textview_1.buffer.text = @grafoPP.retorna_legivel_pessoas()
+    end
+
   
   	def gera_arquivo_PP(parent)
     dialog = Gtk::FileChooserDialog.new(
@@ -145,6 +183,7 @@ class ViewPP
       @grafoPP.imprime_pajek(@filename+".net")
     end
 	end
+
   
   
 end
