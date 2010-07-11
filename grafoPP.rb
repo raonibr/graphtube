@@ -24,12 +24,12 @@ O resto vai apenas retornar Nil...
 
 class GrafoPP < Grafo
 
-  def initialize(grafo_base)
+  def initialize(grafo_base, semaforo)
     @vertices = []
     @arestas = []
     @vertices_aux = []
     @vertices_todos = []
-    
+    @semaforo_escopo = semaforo
     @pessoas = grafo_base.pessoas()
     
     # Arestas_aux será um hash que guardará os grupos de pessoas que frequentam o mesmo lugar
@@ -125,28 +125,41 @@ class GrafoPP < Grafo
     @hash_aux_pessoas = Hash[]
     @pessoas.each do |pessoa|
       @hash_aux_pessoas[pessoa.interview_id()] = []
-      pessoa.locais_moradia().each do |local_moradia|
-        if (local_moradia[6])
-          @hash_aux_pessoas[pessoa.interview_id()] << [local_moradia[6].to_f(),local_moradia[7].to_f()]
+      
+      
+      if (@semaforo_escopo[0] == 1)
+        pessoa.locais_moradia().each do |local_moradia|
+          if (local_moradia[6])
+            @hash_aux_pessoas[pessoa.interview_id()] << [local_moradia[6].to_f(),local_moradia[7].to_f()]
+          end
         end
       end
-      pessoa.locais_trabalho().each do |local_trabalho|
-        if (local_trabalho[6])
-          @hash_aux_pessoas[pessoa.interview_id()] << [local_trabalho[6].to_f(),local_trabalho[7].to_f()]
+      
+      if (@semaforo_escopo[1] == 1)
+        pessoa.locais_trabalho().each do |local_trabalho|
+          if (local_trabalho[6])
+            @hash_aux_pessoas[pessoa.interview_id()] << [local_trabalho[6].to_f(),local_trabalho[7].to_f()]
+          end
         end
       end
-      pessoa.locais_estudo().each do |local_estudo|
-        if (local_estudo[6])
-          @hash_aux_pessoas[pessoa.interview_id()] << [local_estudo[6].to_f(),local_estudo[7].to_f()]
-        end
-      end
-      pessoa.locais_lazer().each do |local_lazer|
-        if (local_lazer[4])
-          @hash_aux_pessoas[pessoa.interview_id()] << [local_lazer[4].to_f(),local_lazer[5].to_f()]
-        end
-      end
-    end
     
+      if (@semaforo_escopo[2] == 1)
+        pessoa.locais_estudo().each do |local_estudo|
+          if (local_estudo[6])
+            @hash_aux_pessoas[pessoa.interview_id()] << [local_estudo[6].to_f(),local_estudo[7].to_f()]
+          end
+        end
+      end
+    
+      if (@semaforo_escopo[3] == 1)
+        pessoa.locais_lazer().each do |local_lazer|
+          if (local_lazer[4])
+            @hash_aux_pessoas[pessoa.interview_id()] << [local_lazer[4].to_f(),local_lazer[5].to_f()]
+          end
+        end
+      end
+      
+    end
     
     #Aqui acontece o calculo de distância mínima entre duas pessoas
     for q in 0 .. (@vertices.length()-1)

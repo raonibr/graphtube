@@ -587,6 +587,13 @@ caixa_comandos.pack_start(separator, false, true, 5)
 	check_Moradia.signal_connect("toggled"){
 
 		|w| set_reset_check(w,check_Cidade_moradia,check_Bairro_moradia,check_End_moradia,check_Local_moradia)
+    
+    if (@sem_global[0]==0)
+      @sem_global[0] = 1
+    else 
+      @sem_global[0] = 0
+    end
+    
 	}
 
 	caixa_comandos.pack_start(check_Moradia,false,true,0)
@@ -653,6 +660,11 @@ caixa_comandos.pack_start(separator, false, true, 5)
 	check_trabalho.signal_connect("toggled"){
 
 		|w| set_reset_check(w,check_cidade_trabalho,check_bairro_trabalho,check_end_trabalho,check_local_trabalho)
+    if (@sem_global[1]==0)
+      @sem_global[1] = 1
+    else 
+      @sem_global[1] = 0
+    end
 	
 	}
 
@@ -721,6 +733,12 @@ caixa_comandos.pack_start(separator, false, true, 5)
 	check_estudo.signal_connect("toggled"){
 
 		|w| set_reset_check(w,check_cidade_estudo,check_bairro_estudo,check_end_estudo,check_local_estudo)
+
+    if (@sem_global[2]==0)
+      @sem_global[2] = 1
+    else 
+      @sem_global[2] = 0
+    end
 	}
 
 	caixa_comandos.pack_start(check_estudo,false,true,0)
@@ -788,6 +806,13 @@ caixa_comandos.pack_start(separator, false, true, 5)
 	check_lazer.signal_connect("toggled"){
 
 		|w| set_reset_check(w,check_cidade_lazer,check_bairro_lazer,check_end_lazer,check_local_lazer)
+    
+    if (@sem_global[3]==0)
+      @sem_global[3] = 1
+    else 
+      @sem_global[3] = 0
+    end
+    
 	}
 
 	caixa_comandos.pack_start(check_lazer,false,true,0)
@@ -932,7 +957,7 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Pessoa-Pessoa")
 
 	botao_pessoa_pessoa.signal_connect("clicked") do |w|
-    ViewPP.new($grafoExemplo)
+    ViewPP.new($grafoExemplo, @sem_global)
 	end
 
 
