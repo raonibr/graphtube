@@ -297,8 +297,16 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
  
 # Retorna lista de pessoas em formato legível para exibição em um buffer
   def retorna_legivel_pessoas()
-	string = ""
+  cont = 0
 	if (@vertices)
+    @vertices.each do |vertice|
+			if (vertice[0]=="ID")
+        cont = cont +1
+      end
+		end
+    string = "Total:   "
+    string << cont.to_s()
+    string << " Pessoas\n\n"
 		@vertices.each do |vertice|
 			if (vertice[0]=="ID")
 			  string << vertice[1] 
@@ -311,8 +319,18 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 
 # Retorna lista de lugares em formato legível para exibição em um buffer
   def retorna_legivel_lugares()
-	string = ""
+  cont = 0
 	if (@vertices)
+      @vertices.each do |vertice|
+			if (vertice[0]=="ID")
+			#string = string + vertice[1] + "\n"
+			else
+			 cont = cont +1
+			end
+		end
+    string = "Total:   "
+    string << cont.to_s()
+    string << " Lugares\n\n"
 		@vertices.each do |vertice|
 			if (vertice[0]=="ID")
 			#string = string + vertice[1] + "\n"
@@ -327,7 +345,9 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 
 # Retorna lista de arestas em formato legível para exibição em um buffer
   def retorna_legivel_arestas()
-	string = ""
+	string = "Total:   "
+  string << @arestas.length().to_s()
+  string << " Arestas\n\n"
 	if (@arestas)
 		@arestas.each do |aresta|
 			string << aresta[0]

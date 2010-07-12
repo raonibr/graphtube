@@ -39,9 +39,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @sem_estudo = [0,0,0,0]
 @sem_lazer = [0,0,0,0]
 @sem_caso = [0,0]
-@sem_sexo = [0,0]
-@sem_hcontato = [0,0]
-@sem_reativacao = [0,0]
+@sem_sexo = [1,1]
+@sem_hcontato = [1,1]
+@sem_reativacao = [1,1]
 @sem_filtros_extra = [0]
 @idadeinicial = 0 
 @idadefinal = 99
@@ -276,6 +276,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   
   check_masculino = Gtk::CheckButton.new("Masculino")
 
+  check_masculino.active = true
+
 	check_masculino.signal_connect("toggled") do |w|
 		gera_ativos( "Sexo", 1)
 
@@ -283,6 +285,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	caixa_sexos.pack_start(check_masculino,false,true,0)	
 
 	check_feminino = Gtk::CheckButton.new("Feminino")
+
+  check_feminino.active = true
 
 	check_feminino.signal_connect("toggled") do |w|
 		gera_ativos( "Sexo", 2)
@@ -434,6 +438,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   caixa_hcontato.pack_start(label,false,true,0)	
   
   check_sim = Gtk::CheckButton.new("Sim")
+  check_sim.active = true
   
 	check_sim.signal_connect("toggled") do |w|
 		gera_ativos( "hcontato", 1)
@@ -443,7 +448,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	caixa_hcontato.pack_start(check_sim,false,true,0)	
 
 	check_nao = Gtk::CheckButton.new("Nao")
-
+  check_nao.active = true
+  
 	check_nao.signal_connect("toggled") do |w|
 		gera_ativos( "hcontato", 2)
 
@@ -463,7 +469,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
   label = Gtk::Label.new("Reativacao:")
   caixa_reativa.pack_start(label,false,true,0)	
 	check_sim = Gtk::CheckButton.new("Sim")
-
+  check_sim.active = true
+  
 	check_sim.signal_connect("toggled") do |w|
 		gera_ativos( "reativacao", 1)
 
@@ -471,7 +478,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 	caixa_reativa.pack_start(check_sim,false,true,0)	
 
 	check_nao = Gtk::CheckButton.new("Nao")
-
+  check_nao.active = true
+  
 	check_nao.signal_connect("toggled") do |w|
 		gera_ativos( "reativacao", 2)
 
