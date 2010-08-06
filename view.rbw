@@ -224,7 +224,7 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 
 	window.title = "GraphTube"
 	window.border_width = 10
-	window.set_size_request(890, 730)
+	window.set_size_request(800, 730)
 	
 	window.signal_connect('delete_event') do
 		Gtk.main_quit
@@ -949,69 +949,45 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
 #---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE DESENHAR---------------------------------------#
-	botao_desenhar = Gtk::Button.new("Desenhar GRAFO")
-
-	botao_desenhar.signal_connect("clicked") do |w|
+	desenhar_grafo = Gtk::MenuItem.new("  Desenhar GRAFO ")
+  
+	desenhar_grafo.signal_connect("activate") do |w|
 		DrawView.new($grafoExemplo.vertices(),$grafoExemplo.arestas())
 	end
-
-
-	
-	caixa_comandos.pack_start(botao_desenhar,true,false,0)
 #---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE PESSOA-PESSOA-------------------#
+  gerar_pp   = Gtk::MenuItem.new("  Gerar Grafo PP ")
 
-botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Pessoa-Pessoa")
-
-	botao_pessoa_pessoa.signal_connect("clicked") do |w|
+  
+  gerar_pp.signal_connect("activate") do |w|
     ViewPP.new($grafoExemplo, @sem_global)
 	end
-
-
-	
-	caixa_comandos.pack_start(botao_pessoa_pessoa,true,false,0)
-
 #---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE LOCAL-LOCAL-------------------#
+gerar_ll   = Gtk::MenuItem.new("  Gerar Grafo LL ")
 
-botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Local-Local")
-
-	botao_pessoa_pessoa.signal_connect("clicked") do |w|
+	gerar_ll.signal_connect("activate") do |w|
     ViewLL.new($grafoExemplo)
 	end
-
-
-	
-	caixa_comandos.pack_start(botao_pessoa_pessoa,true,false,0)
-
 #---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE EXPORTAR . NET---------------------------------------#
-	botao_exportar = Gtk::Button.new("Exportar .NET")
+	exportar_net = Gtk::MenuItem.new("  Exportar .NET ")
 
-	botao_exportar.signal_connect("clicked") do |w|
+	exportar_net.signal_connect("activate") do |w|
 		gera_arquivo(window,"net",$grafoExemplo)
 	end
-
-
-	
-	caixa_comandos.pack_start(botao_exportar,true,false,0)
 #---------------------------------------------------------------------------------------------#
 
 #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
-	botao_exportar = Gtk::Button.new("Exportar Matriz de Adjacencias")
+	exportar_mat = Gtk::MenuItem.new("  Exportar Matriz Adj. ")
 
-	botao_exportar.signal_connect("clicked") do |w|
+	exportar_mat.signal_connect("activate") do |w|
 		gera_arquivo(window,"matrix",$grafoExemplo)
 	end
-
-
-	
-	caixa_comandos.pack_start(botao_exportar,true,false,0)
 #---------------------------------------------------------------------------------------------#
-
 
 #----------------------------------CRIA AS LABELS---------------------------------------------#
 	textviews = Gtk::Notebook.new
@@ -1023,15 +999,45 @@ botao_pessoa_pessoa = Gtk::Button.new("Gerar grafo Local-Local")
 	textviews.append_page(scrolled_textview_3, label3)
 #---------------------------------------------------------------------------------------------#
 
+#----------------------------CRIA MENU BAR--------------------------------------------------#
+  menubar = Gtk::MenuBar.new
+
+  gerar_menu = Gtk::Menu.new
+  exportar_menu = Gtk::Menu.new
+  desenhar_menu = Gtk::Menu.new
+
+  gerar = Gtk::MenuItem.new(" Gerar ")
+  exportar = Gtk::MenuItem.new(" Exportar ")
+  desenhar = Gtk::MenuItem.new(" Desenhar ")
+  
+  gerar_menu.append(gerar_pp)
+  gerar_menu.append(gerar_ll) 
+
+  exportar_menu.append(exportar_net)
+  exportar_menu.append(exportar_mat) 
+  
+  desenhar_menu.append(desenhar_grafo) 
+
+  gerar.submenu = gerar_menu
+  exportar.submenu = exportar_menu
+  desenhar.submenu = desenhar_menu
+
+  menubar.append(gerar)
+  menubar.append(exportar)
+  menubar.append(desenhar)
+#--------------------------------------------------------------------------------------------------------------#
+
 #--------------------------INSERE TUDO NA JANELA PRINCIPAL------------------------------------#
-	janela_total = Gtk::HBox.new(true,10)
 
+  janela_total = Gtk::HBox.new(false,10)
+  janela_total.pack_start(caixa_comandos,true,true,0)
 	janela_total.pack_start(textviews,true,true,0)
-
-	janela_total.pack_start(caixa_comandos,true,true,0)	
-
-	window.add(janela_total)
-	
+  
+  janela_externa = Gtk::VBox.new(false,10)
+  janela_externa.pack_start(menubar,false,false,0)
+  janela_externa.pack_start(janela_total,true,true,0)
+  
+  window.add(janela_externa)
 	window.show_all
 	
 	Gtk.main
