@@ -17,7 +17,7 @@ nova_pessoa = Pessoa.new(interview_id, cidade_entrevista, bairro_entrevista, end
 
 class Pessoa
 sinal = 0
-  def initialize(interview_id, cidade_entrevista, bairro_entrevista, endereco_entrevista, locais_moradia, locais_trabalho, locais_estudo, locais_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, ativo)
+  def initialize(interview_id, cidade_entrevista, bairro_entrevista, endereco_entrevista, locais_moradia, locais_trabalho, locais_estudo, locais_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, ativo, cluster)
   
     @interview_id = interview_id
     @cidade_entrevista = cidade_entrevista 
@@ -34,6 +34,7 @@ sinal = 0
     @tempo_estudo = tempo_estudo
     @renda = renda
     @ativo = ativo
+    @cluster = cluster
     
   end
 
@@ -63,6 +64,10 @@ sinal = 0
   
   def sexo()
     return @sexo
+  end
+  
+  def cluster()
+    return @cluster
   end
   
   def cidade_nascimento()

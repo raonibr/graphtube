@@ -250,6 +250,23 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     end
   end
   
+  #função para desativar todas as pessoas que n�o fazem parte de algum cluster;
+  def desativar_cluster(qual)
+    if (qual == "ALL")
+      @pessoas.each do |pessoa|
+        if !(pessoa.cluster())
+          pessoa.set_ativo(0) 
+        end
+      end
+    else
+      @pessoas.each do |pessoa|
+        if (pessoa.cluster() != qual)
+          pessoa.set_ativo(0) 
+        end
+      end
+    end
+  end
+  
   def desativar_pessoas_idade(min,max)
     @pessoas.each do |pessoa|
       if ((pessoa.idade.to_i() < min.to_i()) or (pessoa.idade.to_i() > max.to_i()))
