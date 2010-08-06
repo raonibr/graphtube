@@ -157,6 +157,9 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     end
     
+    if (@Cluster != "NONE")
+      $grafoExemplo.desativar_cluster(@Cluster)
+    end
     $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
     $grafoExemplo.desativar_pessoas_renda(@renda_inicial, @renda_final)
     $grafoExemplo.desativar_pessoas_escolaridade(@escolaridade_inicial, @escolaridade_final)
@@ -494,6 +497,37 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 separator = Gtk::HSeparator.new
 caixa_comandos.pack_start(separator, false, true, 5)
 
+
+#--------------------------------------CAIXA DE CLUSTER------------------------------#
+  # A INICIAL
+  
+	combobox_cluster = Gtk::ComboBox.new
+	
+  combobox_cluster.append_text("NONE")
+	for i in (1..40)
+		combobox_cluster.append_text(i.to_s())
+	end
+  combobox_cluster.append_text("ALL")
+  
+  combobox_cluster.active = 0
+
+  combobox_cluster.signal_connect("changed") do |d|
+    @Cluster = combobox_cluster.active_text
+    gera_ativos("cluster",1)
+  end
+  
+  caixa_combobox_cluster = Gtk::HBox.new(true,10)
+  label = Gtk::Label.new("Qual cluster:")
+  caixa_combobox_cluster.pack_start(label,false,true,0)	
+
+  caixa_combobox_cluster.pack_start(combobox_cluster,false,true,0)
+
+	caixa_comandos.pack_start(caixa_combobox_cluster,false,true,0)
+#---------------------------------------------------------------------------------------------#	
+
+
+separator2 = Gtk::HSeparator.new
+caixa_comandos.pack_start(separator2, false, true, 5)
 
 
 #-----------------------------COMBOBOXs DE PERIODO DE CONTATO --------------------------------------------------------#	

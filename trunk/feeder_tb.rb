@@ -151,9 +151,15 @@ class Feeder
       tabela_local_lazer = []
     end   
     
-    
+    # Precisa refazer usando hash
+    cluster_feed = db.execute( "SELECT t1.ID_CLUST FROM molecular_tab AS t1 WHERE t1.QUEST =\""+id.to_s()+"\"")
+    if (cluster_feed.length() != 0)
+    cluster_feed = cluster_feed[0][0]
+    else
+    cluster_feed = nil
+    end
     #O ultimo parametro é o registro se essa pessoa está ativa ou não (está sendo levada em consideração no grafo). Inicialmente todos são inativos     
-    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, 1)
+    pessoa_nova = Pessoa.new(id,cidade,bairro,endereco,tabela_local_mora,tabela_local_trab,tabela_local_estudo,tabela_local_lazer, sexo, idade, hcontato, reativacao, tempo_estudo, renda, 1,cluster_feed)
 	
     @pessoa << pessoa_nova
   end
