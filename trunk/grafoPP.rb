@@ -31,6 +31,7 @@ class GrafoPP < Grafo
     @vertices_todos = []
     @semaforo_escopo = semaforo
     @pessoas = grafo_base.pessoas()
+    @hash_molecular = grafo_base.hash_molecular()
     
     # Arestas_aux será um hash que guardará os grupos de pessoas que frequentam o mesmo lugar
     # Cada bó do hash representa um lugar e é um vetor de pessoas.. (A chave do hash é o nome do local)

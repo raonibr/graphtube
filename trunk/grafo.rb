@@ -15,6 +15,16 @@ class Grafo
     @pessoas = pessoa
     @vertices = []
     @arestas = []
+    
+    #Hash que guarda as informações moleculares das pessoas para facilitar a consulta depois.
+    @hash_molecular = Hash[]
+    
+    @pessoas.each do |unidade|
+      if (@hash_molecular[unidade.interview_id()] == nil)
+        @hash_molecular[unidade.interview_id()] = [unidade.cluster()]
+      end
+    end
+    
     self.desativar_todos()
 
   end
@@ -305,6 +315,11 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   def pessoas()
     return @pessoas
   end
+
+#Retorna o hash auxiliar molecular
+  def hash_molecular()
+    return @hash_molecular
+  end
   
 # Limpa o Grafo, retirando suas arestas e vertices (Mas nÃ£o as pessoas)
   def clear_grafo()
@@ -379,8 +394,13 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 
 # Cria um arquivo contendo o grafo descrito em formato .net para ser aberto no pajek
 # PRECISA SER REFATORADO USANDO HASH DE VERTICES
-  def imprime_pajek(nome_arquivo)
+  def imprime_pajek(nome_arquivo, *args)
     arquivo = File.new(nome_arquivo, "w+")
+    
+    if (args.length != 0 )
+      param_tipo = args[0]
+    end
+    
     i = 1
     #Imprime os vertices no arquivo:
     listav = []
@@ -396,12 +416,32 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     listav.each do |vertice|
       if (vertice[2]=="ID")
         if (vertice[1][0] == 50)
-          arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Yellow      bc Yellow \n")
+          if !(param_tipo)
+            arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Yellow      bc Yellow \n")
+          else
+            if(@hash_molecular[vertice[1]])
+              arquivo.write("#{vertice[0]} \"#{@hash_molecular[vertice[1]]}(#{vertice[1]})\" ic Yellow      bc Yellow \n")
+            else
+              arquivo.write("#{vertice[0]} \"(#{vertice[1]})\" ic Yellow      bc Yellow \n")
+            end
+          end
         else  
-          arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Red      bc Red \n")
+          if !(param_tipo)
+            arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Red      bc Red \n")
+          else
+            if(@hash_molecular[vertice[1]])
+              arquivo.write("#{vertice[0]} \"#{@hash_molecular[vertice[1]]}(#{vertice[1]})\" ic Red      bc Red \n")
+            else
+              arquivo.write("#{vertice[0]} \"(#{vertice[1]})\" ic Red      bc Red \n")
+            end
+          end
         end
       else
-        arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Blue     bc Blue \n")
+        if !(param_tipo)
+          arquivo.write("#{vertice[0]} \"#{vertice[1]}\" ic Blue     bc Blue \n")
+        else
+          arquivo.write("#{vertice[0]} \"(#{vertice[1]})\" ic Blue     bc Blue \n")
+        end
       end
     end
     
@@ -432,6 +472,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 # A função imprime a matriz de adjacencias para o conjunto de vertices exisentes de forma indiscriminada
   def imprime_matriz_adjacencias(nome_arquivo)
     arquivo = File.new(nome_arquivo, "w+")
+  
     i = @vertices.length()
     
     # Isso cria uma matriz de n por n onde n é o número de vértices.

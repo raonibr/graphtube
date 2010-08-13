@@ -215,6 +215,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
         grafo_usado.imprime_pajek(@filename+".net")
       elsif(tipo == "matrix")
         grafo_usado.imprime_matriz_adjacencias(@filename+".txt")
+      elsif(tipo == "net2")
+        grafo_usado.imprime_pajek(@filename+".net", 1)
       else
         grafo_usado.imprime_matriz_distancias_minimas(@filename+".txt")
       end
@@ -1018,6 +1020,14 @@ gerar_ll   = Gtk::MenuItem.new("  Gerar Grafo LL ")
 	end
 #---------------------------------------------------------------------------------------------#
 
+#------------------------------CRIA O BOTÃO DE EXPORTAR . NET COM CLUSTERS---------------------------------------#
+	exportar_net_2 = Gtk::MenuItem.new("  Exportar .NET + CLUSTERS ")
+
+	exportar_net_2.signal_connect("activate") do |w|
+		gera_arquivo(window,"net2",$grafoExemplo)
+	end
+#---------------------------------------------------------------------------------------------#
+
 #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
 	exportar_mat = Gtk::MenuItem.new("  Exportar Matriz Adj. ")
 
@@ -1051,6 +1061,7 @@ gerar_ll   = Gtk::MenuItem.new("  Gerar Grafo LL ")
   gerar_menu.append(gerar_ll) 
 
   exportar_menu.append(exportar_net)
+  exportar_menu.append(exportar_net_2)
   exportar_menu.append(exportar_mat) 
   
   desenhar_menu.append(desenhar_grafo) 
