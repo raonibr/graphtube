@@ -252,7 +252,7 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
   
   #função para desativar todas as pessoas que n�o fazem parte de algum cluster;
   def desativar_cluster(qual)
-    if (qual == "ALL")
+    if (qual == "TODOS OS CLUSTERS")
       @pessoas.each do |pessoa|
         if !(pessoa.cluster())
           pessoa.set_ativo(0) 
