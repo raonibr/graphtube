@@ -50,6 +50,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
 @escolaridade_incial = 0
 @escolaridade_final = 15
 
+@Cluster = "IGNORAR"
+
 	def atualiza_buffer()
 		$grafoExemplo.clear_grafo()
 		cont = 0	
@@ -157,9 +159,10 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
       end
     end
     
-    if (@Cluster != "NONE")
+    if (@Cluster != "IGNORAR")
       $grafoExemplo.desativar_cluster(@Cluster)
     end
+    
     $grafoExemplo.desativar_pessoas_idade(@idadeinicial, @idadefinal)
     $grafoExemplo.desativar_pessoas_renda(@renda_inicial, @renda_final)
     $grafoExemplo.desativar_pessoas_escolaridade(@escolaridade_inicial, @escolaridade_final)
@@ -503,11 +506,11 @@ caixa_comandos.pack_start(separator, false, true, 5)
   
 	combobox_cluster = Gtk::ComboBox.new
 	
-  combobox_cluster.append_text("NONE")
+  combobox_cluster.append_text("IGNORAR")
 	for i in (1..40)
 		combobox_cluster.append_text(i.to_s())
 	end
-  combobox_cluster.append_text("ALL")
+  combobox_cluster.append_text("TODOS OS CLUSTERS")
   
   combobox_cluster.active = 0
 
@@ -517,7 +520,7 @@ caixa_comandos.pack_start(separator, false, true, 5)
   end
   
   caixa_combobox_cluster = Gtk::HBox.new(true,10)
-  label = Gtk::Label.new("Qual cluster:")
+  label = Gtk::Label.new("Mostrar apenas o(s) cluster(s):")
   caixa_combobox_cluster.pack_start(label,false,true,0)	
 
   caixa_combobox_cluster.pack_start(combobox_cluster,false,true,0)
