@@ -121,6 +121,18 @@ check_Excluir = Gtk::CheckButton.new("Ignorar individuos sem conexoes.")
     
     caixa_comandos.pack_start(botao_exportar,false,false,0)
   #---------------------------------------------------------------------------------------------#
+  
+     #------------------------------CRIA O BOTÃO DE EXPORTAR CLUSTERS---------------------------------------#
+    botao_exportar2 = Gtk::Button.new("Exportar .NET + CLUSTERS")
+
+    botao_exportar2.signal_connect("clicked") do |w|
+      gera_arquivo(window,"net2", @grafoPP)
+    end
+
+
+    
+    caixa_comandos.pack_start(botao_exportar2,false,false,0)
+  #---------------------------------------------------------------------------------------------#
    
   #------------------------------CRIA O BOTÃO DE EXPORTAR MATRIZ DE ADJ---------------------------------------#
 	  botao_exportar = Gtk::Button.new("Exportar Matriz de Adjacencias")
