@@ -217,6 +217,8 @@ $grafoExemplo = Grafo.new(feeder.gera_pessoas())
         grafo_usado.imprime_matriz_adjacencias(@filename+".txt")
       elsif(tipo == "net2")
         grafo_usado.imprime_pajek(@filename+".net", 1)
+      elsif(tipo == "net_matrix")
+        grafo_usado.imprime_pajek_com_matriz_bipartiti(@filename+".net")
       else
         grafo_usado.imprime_matriz_distancias_minimas(@filename+".txt")
       end
@@ -1033,6 +1035,14 @@ gerar_ll   = Gtk::MenuItem.new("  Gerar Grafo LL ")
 
 	exportar_mat.signal_connect("activate") do |w|
 		gera_arquivo(window,"matrix",$grafoExemplo)
+	end
+#---------------------------------------------------------------------------------------------#
+
+#------------------------------CRIA O BOTÃO DE EXPORTAR PAJEK COM MATRIZ DE ADJ---------------------------------------#
+	exportar_mat = Gtk::MenuItem.new("  Exportar .NET com Mat. Adj. ")
+
+	exportar_mat.signal_connect("activate") do |w|
+		gera_arquivo(window,"net_matrix",$grafoExemplo)
 	end
 #---------------------------------------------------------------------------------------------#
 
