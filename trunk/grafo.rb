@@ -528,6 +528,9 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 # Cria um arquivo contendo o grafo descrito em formato .net com matriz de adjacencia bipartida para ser usado no framework de Alex Santana
   def imprime_pajek_com_matriz_bipartiti(nome_arquivo, *args)
     arquivo = File.new(nome_arquivo, "w+")
+    nome_arquivo_conf = nome_arquivo.chomp(".net")
+    nome_arquivo_conf = nome_arquivo_conf << ".conf"
+    arquivo_conf = File.new(nome_arquivo_conf, "w+")
     
     i = 1
     agents = 0
@@ -552,26 +555,18 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     
     arquivo.write(" #{agents}\n")
     listav_P.each do |vertice|
-        arquivo.write("#{vertice[0]} \"#{vertice[1]}\"\n")
+        arquivo.write("#{vertice[0]}\n")
     end
     
     listav_L.each do |vertice|
   
-        arquivo.write("#{vertice[0]} \"#{vertice[1]}\"\n")
+        arquivo.write("#{vertice[0]}\n")
     end
     
     arquivo.write("*Matrix\n")
     
-    
-    
-    
-    
-    
-    
-    
-    
-        altura = listav_P.length()
-        largura = listav_L.length()
+    altura = listav_P.length()
+    largura = listav_L.length()
         
     # Isso cria uma matriz de n por n onde n é o número de vértices.
     @matriz_adj = Array.new(altura)
@@ -610,17 +605,33 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
     for q in 0 .. (altura-1)
       for w in 0 .. (largura-1)
         arquivo.write("#{@matriz_adj[q][w]}")
+        if(w != largura-1)
+          arquivo.write(" ")
+        end
       end
       arquivo.write("\n")
     end  
     
     
-    
-    
-    
+    arquivo_conf.write("#{listav_P.length()} 0 #{listav_L.length()} 0\n")
+    flag = 0
+    for q in 0 .. (altura-1)
+    flag = 0
+    arquivo_conf.write("#{q+1} 0 ")
+      for w in 0 .. (largura-1)
+        if((flag != 1)and(@matriz_adj[q][w]==1))
+          arquivo_conf.write("#{w+1}\n")
+          flag = 1;
+        end
+      end
+      if (flag==0)
+        arquivo_conf.write("0\n")
+      end
+    end  
     
     
   arquivo.close
+  arquivo_conf.close
 	return arquivo
   end
 
