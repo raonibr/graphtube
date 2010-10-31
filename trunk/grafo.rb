@@ -524,4 +524,104 @@ Formato de chamada: gerar_grafo_PL(classe,escopo)
 	  return arquivo
   end
 
+
+# Cria um arquivo contendo o grafo descrito em formato .net com matriz de adjacencia bipartida para ser usado no framework de Alex Santana
+  def imprime_pajek_com_matriz_bipartiti(nome_arquivo, *args)
+    arquivo = File.new(nome_arquivo, "w+")
+    
+    i = 1
+    agents = 0
+    #Imprime os vertices no arquivo:
+    listav_P = []
+    listav_L = []
+    arquivo.write("*Vertices #{@vertices.length()}")
+    @vertices.each do |vertice|
+      if (vertice[0]=="ID")
+	     listav_P << [i,vertice[1],"ID"]
+       agents = agents + 1
+       i=i+1
+	    end
+    end
+    
+    @vertices.each do |vertice|
+      if (vertice[0]!="ID")
+	     listav_L << [i,vertice,"LOC"]
+        i=i+1
+	    end
+    end
+    
+    arquivo.write(" #{agents}\n")
+    listav_P.each do |vertice|
+        arquivo.write("#{vertice[0]} \"#{vertice[1]}\"\n")
+    end
+    
+    listav_L.each do |vertice|
+  
+        arquivo.write("#{vertice[0]} \"#{vertice[1]}\"\n")
+    end
+    
+    arquivo.write("*Matrix\n")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        altura = listav_P.length()
+        largura = listav_L.length()
+        
+    # Isso cria uma matriz de n por n onde n é o número de vértices.
+    @matriz_adj = Array.new(altura)
+    @matriz_adj.map! { Array.new(largura,0) }
+
+    
+    
+    
+    # Esseshashs auxiliara mentendo uma lista de todos os elementos e suas respectivas posições na matriz de adjacencias
+    @hash_aux_matriz_pessoas = Hash[]
+    @hash_aux_matriz_lugares = Hash[]
+    cont_P = 0
+    cont_L = 0
+    @vertices.each do |vertice|
+      if (vertice.is_a?(String))
+       @hash_aux_matriz_lugares[vertice] = cont_L
+       cont_L=cont_L+1
+      elsif (vertice[0]=="ID")
+	      @hash_aux_matriz_pessoas[vertice[1]] = cont_P
+        cont_P=cont_P+1
+      else
+        @hash_aux_matriz_pessoas[vertice[0]] = cont_P
+        cont_P=cont_P+1
+      end
+    end
+    
+    
+    
+    #Agora cada aresta vai representar um  1 na matriz de adjacencias
+    @arestas.each do |aresta|
+      a = @hash_aux_matriz_pessoas[aresta[0]]
+      b = @hash_aux_matriz_lugares[aresta[1]]
+      @matriz_adj[a][b] = 1
+    end
+    
+    for q in 0 .. (altura-1)
+      for w in 0 .. (largura-1)
+        arquivo.write("#{@matriz_adj[q][w]}")
+      end
+      arquivo.write("\n")
+    end  
+    
+    
+    
+    
+    
+    
+    
+  arquivo.close
+	return arquivo
+  end
+
 end
